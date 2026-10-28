@@ -15,6 +15,7 @@ import {
 } from '../data/data';
 import {ContactType, Project} from '../data/dataDef';
 import {since, useProjects} from '../lib/projects';
+import {decodeSecret, secretHref} from './ProtectedContact';
 import {toggleTheme} from './ThemeToggle';
 
 /**
@@ -46,7 +47,12 @@ const toneClass: Record<Tone, string> = {
   error: 'term-error',
 };
 
-const email = contact.items.find(item => item.type === ContactType.Email);
+const emailItem = contact.items.find(item => item.type === ContactType.Email);
+// decoded only when a command runs, so the address never ships in the static HTML
+const emailLink = () =>
+  emailItem
+    ? link(secretHref(emailItem) ?? '#', emailItem.secret ? decodeSecret(emailItem.secret) : emailItem.text, false)
+    : null;
 const linkOf = (label: string) => socialLinks.find(social => social.label === label)?.href;
 
 /** A profile URL without the scheme, e.g. "github.com/alex". */
@@ -181,7 +187,7 @@ const COMMANDS: Record<string, {hint?: string; hidden?: boolean; run: (args: str
   contact: {
     hint: 'get in touch',
     run: () => [
-      ['out', <>email {email ? link(email.href ?? '#', email.text, false) : '—'}</>],
+      ['out', <>email {emailLink() ?? '—'}</>],
       ['out', <>github {link(linkOf('Github') ?? '#', bare(linkOf('Github')))}</>],
       ['out', <>linkedin {link(linkOf('LinkedIn') ?? '#', bare(linkOf('LinkedIn')).replace('linkedin.com/', ''))}</>],
     ],
@@ -229,7 +235,7 @@ const COMMANDS: Record<string, {hint?: string; hidden?: boolean; run: (args: str
     hidden: true,
     run: () => [
       ['ok', '[sudo] permission granted. great choice.'],
-      ['out', <>next step: {email ? link(email.href ?? '#', email.text, false) : 'see contact'} or run `contact`</>],
+      ['out', <>next step: {emailLink() ?? 'see contact'} or run `contact`</>],
     ],
   },
   'rm -rf /': {

@@ -30,6 +30,11 @@ basics:
       username: Alex Morgan
       url: https://www.linkedin.com/in/your-profile/
 
+# Email and phone are kept out of the published HTML and shown when a visitor clicks
+# "Show email". This stops simple scrapers. Set to false to show them as plain links.
+privacy:
+  hideContactDetails: true
+
 about:
   - >-
     Platform Engineer who likes making the right thing the easy thing. I build self-service tooling on

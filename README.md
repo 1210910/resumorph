@@ -36,6 +36,13 @@ One resume file, many shapes. An open-source CV website template built with Next
 
 If something in `resume.yaml` is wrong, `npm run build` (and `npm run dev`) stops and lists what to fix, for example `work.0.startDate: use YYYY, YYYY-MM or YYYY-MM-DD, e.g. 2024-03`.
 
+## Privacy
+
+- **Email and phone are hidden from scrapers by default.** They are encoded when the site builds and only appear when a visitor clicks "Show email" or "Show phone". The plain values are not in the HTML, the JavaScript or the structured data. Set `privacy.hideContactDetails: false` in `resume.yaml` to show them as plain links.
+- **AI crawlers are asked to stay out.** `public/robots.txt` blocks the known AI and scraping bots (GPTBot, CCBot, Bytespider…) and lets search engines in, and every page carries a `noai, noimageai` robots tag.
+- **Your repo is public too.** GitHub Pages on a free account needs a public repo, so anyone can read `resume.yaml` on GitHub. Only put in it what you are happy to publish. Leave the phone out if you can, or use an email alias you can replace.
+- None of this stops a determined person with a browser; it makes harvesting slow and unrewarding.
+
 ## Deploy to GitHub Pages
 
 1. Push to `main`.

@@ -18,6 +18,9 @@ const date = z
 
 const text = z.string().trim().min(1);
 
+/** Email or phone after the YAML loader has encoded it (privacy.hideContactDetails). */
+const encoded = z.object({encoded: z.array(z.number().int())});
+
 const profile = z.object({
   /** GitHub, LinkedIn, X, Instagram, Facebook, Dribbble, Stack Overflow, or any other name. */
   network: text,
@@ -131,8 +134,8 @@ export const ResumeSchema = z.object({
     initials: text.max(3).optional(),
     /** Lowercase username for the terminal prompt. Defaults to the first name. */
     handle: text.optional(),
-    email: z.string().email().optional(),
-    phone: text.optional(),
+    email: z.union([z.string().email(), encoded]).optional(),
+    phone: z.union([text, encoded]).optional(),
     url: z.string().url().optional(),
     /** One or two sentences: who you are and what you do. Used in the hero and for search engines. */
     summary: text,
@@ -170,6 +173,17 @@ export const ResumeSchema = z.object({
     .object({
       headline: text.default('Get in touch.'),
       message: text.optional(),
+    })
+    .default({}),
+
+  privacy: z
+    .object({
+      /**
+       * Keep email and phone out of the published site: they are stored encoded (by
+       * scripts/yaml-loader.js) and shown only when a visitor clicks "Show email".
+       * Stops simple scrapers; on by default.
+       */
+      hideContactDetails: z.boolean().default(true),
     })
     .default({}),
 

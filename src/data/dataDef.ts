@@ -235,6 +235,8 @@ export interface ContactItem {
   type: ContactType;
   text: string;
   href?: string;
+  /** Encoded value revealed on click, kept out of the static HTML (see ProtectedContact). */
+  secret?: number[];
 }
 
 export interface ContactValue {

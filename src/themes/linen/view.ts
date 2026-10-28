@@ -1,4 +1,5 @@
 import {formatDate, formatRange, initialsOf, languageLevel, locationOf, Resume} from '../../content';
+import {ContactItem, ContactType} from '../../data/dataDef';
 
 /** What the Linen theme draws, derived from resume.yaml. */
 export interface LinenView {
@@ -24,7 +25,8 @@ export interface LinenView {
   /** Certificates first, then education. */
   training: Array<{title: string; issuer: string; year: string}>;
   references: Array<{quote: string; name: string; role: string}>;
-  email?: string;
+  /** Encoded and revealed on click unless privacy.hideContactDetails is off. */
+  email?: ContactItem;
   linkedin?: string;
   titles: {about: string; experience: string; skills: string; references: string};
   contact: {headline: string; message?: string};
@@ -88,7 +90,12 @@ export const toLinen = (resume: Resume): LinenView => {
         ? [{quote: item.reference, name: item.name, role: [item.position, item.company].filter(Boolean).join(', ')}]
         : [],
     ),
-    email: basics.email,
+    email:
+      basics.email === undefined
+        ? undefined
+        : typeof basics.email === 'string'
+          ? {type: ContactType.Email, text: basics.email, href: `mailto:${basics.email}`}
+          : {type: ContactType.Email, text: 'Show email', secret: basics.email.encoded},
     linkedin: basics.profiles.find(item => item.network.toLowerCase() === 'linkedin')?.url,
     titles: {
       about: resume.titles.about ?? 'About me',

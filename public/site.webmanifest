@@ -1,0 +1,11 @@
+{
+  "name": "Alex Morgan — Platform Engineer",
+  "short_name": "Alex Morgan",
+  "icons": [
+    {"src": "icon-192.png", "type": "image/png", "sizes": "192x192"},
+    {"src": "icon-512.png", "type": "image/png", "sizes": "512x512"}
+  ],
+  "theme_color": "#0a0a0b",
+  "background_color": "#0a0a0b",
+  "display": "standalone"
+}

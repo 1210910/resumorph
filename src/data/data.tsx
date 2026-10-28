@@ -221,9 +221,40 @@ export const languages: Language[] = [
 /**
  * Projects — the repos to feature, in order. Name, description, language, topics and
  * stars are fetched from GitHub when the site builds (src/lib/projects.ts); `blurb`
- * fills in when a repo has no description.
+ * fills in when a repo has no description. Projects that aren't public repos set
+ * `fromGithub: false` and list their details by hand, like the demo ones below.
  */
 export const projectRepos: ProjectRepo[] = [
+  {
+    repo: 'your-username/service-catalog',
+    fromGithub: false,
+    blurb: 'Demo project. One YAML file per service becomes a deployed, monitored service on Kubernetes.',
+    language: 'Go',
+    topics: ['kubernetes', 'platform-engineering', 'gitops'],
+    stars: 128,
+    createdAt: '2024-04-02',
+    pushedAt: '2026-10-01',
+  },
+  {
+    repo: 'your-username/terraform-aws-baseline',
+    fromGithub: false,
+    blurb: 'Demo project. Reusable Terraform modules for VPCs, IAM roles, RDS and S3 with sane defaults.',
+    language: 'HCL',
+    topics: ['terraform', 'aws', 'infrastructure-as-code'],
+    stars: 54,
+    createdAt: '2022-09-15',
+    pushedAt: '2026-08-20',
+  },
+  {
+    repo: 'your-username/kube-cost-report',
+    fromGithub: false,
+    blurb: 'Demo project. A weekly Slack report of Kubernetes spend per team, built from Prometheus metrics.',
+    language: 'Python',
+    topics: ['kubernetes', 'finops', 'prometheus'],
+    stars: 23,
+    createdAt: '2023-06-10',
+    pushedAt: '2026-05-12',
+  },
   {repo: '1210910/resumorph', blurb: 'This template: one resume file, many shapes.'},
 ];
 
@@ -302,11 +333,33 @@ export const experience: CompanyExperience[] = [
 ];
 
 /**
- * References — real people only. Leave empty until they're confirmed; the section
- * then shows just the companies marquee.
+ * References — the demo ones are fictional. On your own resume list real people only, with
+ * their permission; leave the list empty and the section shows just the companies marquee.
  * Shape: {name, role, company, quote?, href?}
  */
-export const references: Reference[] = [];
+export const references: Reference[] = [
+  {
+    name: 'Jordan Reyes',
+    role: 'Head of Platform',
+    company: 'Acme Cloud',
+    quote:
+      'Alex turned our deploy process from a two-day ticket queue into something teams do themselves before lunch. Calm in incidents and generous with their time.',
+    href: 'mailto:jordan.reyes@example.com',
+  },
+  {
+    name: 'Priya Natarajan',
+    role: 'Engineering Manager',
+    company: 'Globex',
+    quote:
+      'The runbooks and dashboards Alex built are still how we run on-call three years later. They make the people around them better engineers.',
+  },
+  {
+    name: 'Sam Okafor',
+    role: 'Senior Backend Engineer',
+    company: 'Globex',
+    quote: 'The person I ask first when something in production does not make sense.',
+  },
+];
 
 /**
  * Contact section

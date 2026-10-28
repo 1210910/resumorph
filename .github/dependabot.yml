@@ -10,6 +10,11 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+    # Major upgrades (Next 15+, ESLint plugins, stylelint) need code changes:
+    # do them on purpose in their own PR, not as automatic bumps.
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
   - package-ecosystem: github-actions
     directory: /
     schedule:

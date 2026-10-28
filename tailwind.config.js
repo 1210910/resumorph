@@ -21,6 +21,16 @@ module.exports = {
           bright: '#a78bfa',
           dim: '#6d28d9',
         },
+        /** Hospitality theme: channels live in --h-* (globalStyles.scss) so dark mode can swap them. */
+        hosp: {
+          bg: 'rgb(var(--h-bg) / <alpha-value>)',
+          surface: 'rgb(var(--h-surface) / <alpha-value>)',
+          ink: 'rgb(var(--h-ink) / <alpha-value>)',
+          muted: 'rgb(var(--h-muted) / <alpha-value>)',
+          line: 'rgb(var(--h-line))', // already carries its own alpha
+          accent: 'rgb(var(--h-accent) / <alpha-value>)',
+          deep: 'rgb(var(--h-deep) / <alpha-value>)',
+        },
         /** Neutral grays for chrome text (labels, captions, meta). */
         smoke: {
           200: '#d4d4d4',
@@ -31,6 +41,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        serif: ['var(--font-fraunces)', 'Georgia', 'serif'],
         display: ['var(--font-space-grotesk)', 'var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       boxShadow: {

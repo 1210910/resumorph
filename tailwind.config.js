@@ -31,6 +31,14 @@ module.exports = {
           accent: 'rgb(var(--ln-accent) / <alpha-value>)',
           deep: 'rgb(var(--ln-deep) / <alpha-value>)',
         },
+        /** Editorial theme: channels live in --ed-* (globalStyles.scss) so dark mode can swap them. */
+        ed: {
+          paper: 'rgb(var(--ed-paper) / <alpha-value>)',
+          ink: 'rgb(var(--ed-ink) / <alpha-value>)',
+          muted: 'rgb(var(--ed-muted) / <alpha-value>)',
+          rule: 'rgb(var(--ed-rule))', // already carries its own alpha
+          accent: 'rgb(var(--ed-accent) / <alpha-value>)',
+        },
         /** Neutral grays for chrome text (labels, captions, meta). */
         smoke: {
           200: '#d4d4d4',
@@ -41,7 +49,8 @@ module.exports = {
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
-        serif: ['var(--font-fraunces)', 'Georgia', 'serif'],
+        // each page theme sets --font-serif to its own face (LinenPage, EditorialPage)
+        serif: ['var(--font-serif)', 'Georgia', 'serif'],
         display: ['var(--font-space-grotesk)', 'var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       boxShadow: {

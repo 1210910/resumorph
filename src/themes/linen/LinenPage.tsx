@@ -1,17 +1,18 @@
 import {Fraunces} from 'next/font/google';
 import Head from 'next/head';
-import {FC, memo, useEffect, useMemo} from 'react';
+import {CSSProperties, FC, memo, useEffect, useMemo} from 'react';
 
 import {Resume} from '../../content';
+import {toThemeView} from '../view';
 import LinenTheme from '.';
-import {toLinen} from './view';
 
 const fraunces = Fraunces({
   subsets: ['latin'],
   display: 'swap',
   style: ['normal', 'italic'],
-  variable: '--font-fraunces',
 });
+
+const fontVars = {'--font-serif': fraunces.style.fontFamily} as CSSProperties;
 
 /** A full page in the Linen theme: fonts, meta tags and the linen page canvas. */
 const LinenPage: FC<{resume: Resume; demo?: boolean}> = memo(({resume, demo}) => {
@@ -22,7 +23,7 @@ const LinenPage: FC<{resume: Resume; demo?: boolean}> = memo(({resume, demo}) =>
     return () => classList.remove('theme-linen');
   }, []);
 
-  const view = useMemo(() => toLinen(resume), [resume]);
+  const view = useMemo(() => toThemeView(resume), [resume]);
   const title = `${view.name} · ${view.role}`;
   return (
     <>
@@ -33,7 +34,7 @@ const LinenPage: FC<{resume: Resume; demo?: boolean}> = memo(({resume, demo}) =>
         <meta content={view.summary} property="og:description" />
         <meta content="profile" property="og:type" />
       </Head>
-      <div className={fraunces.variable}>
+      <div style={fontVars}>
         <LinenTheme demo={demo} resume={view} />
       </div>
     </>

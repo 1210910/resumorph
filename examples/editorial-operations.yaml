@@ -1,0 +1,125 @@
+# Example resume for the editorial theme: an operations director.
+# Nora Castell and every company, person and number here are made up.
+# Copy what you need into resume.yaml at the root of the repo.
+
+theme: editorial
+
+basics:
+  name: Nora Castell
+  label: Director of Operations
+  email: nora.castell@example.com
+  summary: Twelve years running operations for retail and logistics companies. I turn growth plans into teams, processes and numbers that hold up on a Monday morning.
+  location:
+    city: Lisbon
+    country: Portugal
+  availability: Open to leadership roles in operations
+  profiles:
+    - network: LinkedIn
+      username: Nora Castell
+      url: https://www.linkedin.com/in/your-profile/
+
+about:
+  - I started as a shift supervisor in a distribution centre and have spent my career in the gap between strategy and the warehouse floor. Today I run operations for a retail group with 40 stores, two warehouses and 600 people.
+  - 'My work is mostly about people and plain numbers: hiring managers who stay, setting three or four measures everyone understands, and fixing the process before buying the software. I have led two acquisitions through integration and one turnaround back to profit.'
+
+stats:
+  - value: '12'
+    label: years in operations
+  - value: '600'
+    label: people across my teams
+  - value: '€84M'
+    label: budget I manage
+  - value: '-18%'
+    label: cost to serve since 2022
+
+work:
+  - name: Corvo Retail Group
+    position: Director of Operations
+    description: Home and garden retailer · 40 stores · 2 warehouses
+    location: Lisbon, Portugal
+    startDate: 2021-05
+    highlights:
+      - '**Integration:** Led the merger of two acquired chains into one network, systems and team in 14 months, on budget.'
+      - '**Cost to serve:** Cut it by 18% by redesigning store replenishment and closing an underused warehouse.'
+      - '**People:** Built a leadership team of nine; regretted attrition among store managers fell from 22% to 9%.'
+      - '**Planning:** Introduced a monthly sales and operations planning cycle shared by finance, buying and stores.'
+    keywords: [P&L ownership, S&OP, M&A integration, Change management]
+  - name: Halden Freight
+    position: Head of Fulfilment
+    description: Third-party logistics · 4 sites
+    location: Porto, Portugal
+    startDate: 2017-02
+    endDate: 2021-04
+    highlights:
+      - Ran four fulfilment sites for e-commerce clients, 30,000 orders a day at peak.
+      - Took on-time dispatch from 91% to 99.2% with simpler shift patterns and a daily performance huddle.
+      - Won and launched three new clients, adding €12M a year in revenue.
+    keywords: [Fulfilment, Lean, Vendor management]
+  - name: Halden Freight
+    position: Site Manager
+    location: Porto, Portugal
+    startDate: 2014-09
+    endDate: 2017-01
+    summary: Managed a 180-person distribution site through its move to a new building without missing a client deadline.
+  - name: Brightline Consulting
+    position: Operations Analyst
+    location: Lisbon, Portugal
+    startDate: 2012-09
+    endDate: 2014-08
+    summary: Supply chain and process projects for retail and food clients; built the cost models behind three network redesigns.
+
+education:
+  - institution: Example Business School
+    studyType: MBA
+    area: Operations and Strategy
+    startDate: 2018
+    endDate: 2020
+  - institution: Example University of Lisbon
+    studyType: BSc
+    area: Industrial Engineering
+    startDate: 2008
+    endDate: 2012
+
+certificates:
+  - name: Lean Six Sigma Black Belt
+    issuer: Example Quality Institute
+    date: 2016
+  - name: Certified Supply Chain Professional
+    issuer: Example Supply Chain Association
+    date: 2019
+
+skills:
+  - name: Leadership
+    keywords: [Building leadership teams, Coaching managers, Change management, Stakeholder management]
+  - name: Operations
+    keywords: [P&L ownership, Sales and operations planning, Network design, Lean, Vendor negotiation]
+  - name: Tools
+    keywords: [SAP, Power BI, Excel modelling, Jira]
+
+languages:
+  - language: Portuguese
+    fluency: Native
+  - language: English
+    fluency: Fluent (C2)
+  - language: Spanish
+    fluency: Professional (B2)
+
+references:
+  - name: Duarte Lemos
+    position: CEO
+    company: Corvo Retail Group
+    reference: Nora took two businesses that had nothing in common but our logo and made them one company. She is the person I trust with the hard calls.
+  - name: Helena Marsh
+    position: Managing Director
+    company: Halden Freight
+    reference: Our best clients asked for her by name. She builds teams that keep performing long after she has moved on.
+
+contact:
+  headline: Let’s talk about your next stage of growth.
+  message: I am happy to share references and detailed results in a first conversation.
+
+titles:
+  about: Profile
+  experience: Career
+  skills: Expertise
+  references: References

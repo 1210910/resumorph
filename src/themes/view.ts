@@ -1,8 +1,11 @@
-import {formatDate, formatRange, initialsOf, languageLevel, locationOf, Resume} from '../../content';
-import {ContactItem, ContactType} from '../../data/dataDef';
+import {formatDate, formatRange, initialsOf, languageLevel, locationOf, Resume} from '../content';
+import {ContactItem, ContactType} from '../data/dataDef';
 
-/** What the Linen theme draws, derived from resume.yaml. */
-export interface LinenView {
+/**
+ * What the page themes (Linen, Editorial) draw, derived from resume.yaml. The Terminal theme
+ * has its own mapping in src/data/data.tsx.
+ */
+export interface ThemeView {
   name: string;
   initials: string;
   role: string;
@@ -19,9 +22,11 @@ export interface LinenView {
     location?: string;
     date: string;
     highlights: string[];
+    /** Tools or skills used in the role. */
+    keywords: string[];
   }>;
   skills: Array<{name: string; skills: string[]}>;
-  languages: LinenLanguage[];
+  languages: ThemeLanguage[];
   /** Certificates first, then education. */
   training: Array<{title: string; issuer: string; year: string}>;
   references: Array<{quote: string; name: string; role: string}>;
@@ -32,7 +37,7 @@ export interface LinenView {
   contact: {headline: string; message?: string};
 }
 
-export interface LinenLanguage {
+export interface ThemeLanguage {
   name: string;
   level: string;
   /** 1 (basic) to 5 (native), drawn as dots */
@@ -44,7 +49,7 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 /** Strips the **bold** markers the terminal theme renders. */
 const plain = (text: string) => text.replace(/\*\*([^*]+)\*\*/g, '$1');
 
-export const toLinen = (resume: Resume): LinenView => {
+export const toThemeView = (resume: Resume): ThemeView => {
   const {basics} = resume;
   return {
     name: basics.name,
@@ -63,6 +68,7 @@ export const toLinen = (resume: Resume): LinenView => {
       location: job.location,
       date: formatRange(job.startDate, job.endDate),
       highlights: (job.highlights.length ? job.highlights : job.summary ? [job.summary] : []).map(plain),
+      keywords: job.keywords,
     })),
     skills: [
       ...resume.skills.map(group => ({name: group.name, skills: group.keywords})),

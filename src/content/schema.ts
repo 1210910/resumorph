@@ -123,8 +123,11 @@ const nowSection = z.object({
 });
 
 export const ResumeSchema = z.object({
-  /** Which look the site uses: terminal (dark, animated, for tech roles) or linen (warm, serif). */
-  theme: z.enum(['terminal', 'linen']).default('terminal'),
+  /**
+   * Which look the site uses: terminal (dark, animated, for tech roles), linen (warm and serif,
+   * for service roles) or editorial (magazine-style, for management and corporate roles).
+   */
+  theme: z.enum(['terminal', 'linen', 'editorial']).default('terminal'),
 
   basics: z.object({
     name: text,
@@ -187,7 +190,7 @@ export const ResumeSchema = z.object({
     })
     .default({}),
 
-  /** Section headings for themes that show them (linen). */
+  /** Section headings for themes that show them (linen, editorial). */
   titles: z
     .object({
       about: text.optional(),

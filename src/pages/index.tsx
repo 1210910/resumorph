@@ -15,6 +15,7 @@ import {resume} from '../content';
 import {homePageMeta} from '../data/data';
 import {Project} from '../data/dataDef';
 import {fetchProjects, ProjectsContext} from '../lib/projects';
+import EditorialPage from '../themes/editorial/EditorialPage';
 import LinenPage from '../themes/linen/LinenPage';
 
 // eslint-disable-next-line react-memo/require-memo
@@ -28,6 +29,7 @@ const Home: FC<HomeProps> = memo(({projects}) => {
   const {title, description} = homePageMeta;
   // `theme:` in resume.yaml picks the look
   if (resume.theme === 'linen') return <LinenPage resume={resume} />;
+  if (resume.theme === 'editorial') return <EditorialPage resume={resume} />;
   return (
     <ProjectsContext.Provider value={projects}>
       <Page description={description} title={title}>

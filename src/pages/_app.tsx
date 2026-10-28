@@ -33,7 +33,7 @@ const SiteBackground = memo(function SiteBackground() {
 });
 
 // other themes paint their own canvas, so they skip the terminal theme's backdrop and cursor glow
-const OWN_BACKDROP = ['/linen', '/hospitality', ...(resume.theme === 'terminal' ? [] : ['/'])];
+const OWN_BACKDROP = ['/linen', '/hospitality', '/editorial', ...(resume.theme === 'terminal' ? [] : ['/'])];
 
 const MyApp = memo(({Component, pageProps}: AppProps): JSX.Element => {
   const {pathname} = useRouter();

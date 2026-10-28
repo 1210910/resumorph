@@ -64,7 +64,7 @@ Use `npm`; there is no `yarn.lock`.
 - **Screenshots for anything visual**: desktop (1280px) and mobile (390px). The PR template has a table for them.
 - **Mobile and reduced motion still work**: no horizontal scroll at 390px, and new animations are switched off under `prefers-reduced-motion`.
 - **No real personal data.** The demo persona is fictional; never commit a real phone number, address or email other than `example.com`.
-- **Resume content stays in `resume.yaml`.** Its shape lives in `src/content/schema.ts`; each theme maps it to what it draws (`src/data/data.tsx` for Terminal, `src/themes/linen/view.ts` for Linen). Don't hard-code resume text in components.
+- **Resume content stays in `resume.yaml`.** Its shape lives in `src/content/schema.ts`; each theme maps it to what it draws (`src/data/data.tsx` for Terminal, `src/themes/view.ts` for Linen and Editorial). Don't hard-code resume text in components.
 
 ## Checks
 

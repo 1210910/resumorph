@@ -4,14 +4,14 @@ One resume file, many shapes. An open-source CV website template built with Next
 
 **Live demo:** https://1210910.github.io/resumorph/
 
-**Linen theme preview:** https://1210910.github.io/resumorph/linen/
+**Theme previews:** [Linen](https://1210910.github.io/resumorph/linen/) · [Editorial](https://1210910.github.io/resumorph/editorial/)
 
-> Work in progress. The template ships two themes: Terminal (a dark, animated look with a live shell in the hero) and Linen (warm and serif). The demo site shows Terminal at `/` and Linen at `/linen`, with the fictional persona in `examples/linen-front-office.yaml`. Next on the roadmap: an editorial theme for management, multiple languages, a PDF generated from the same data, and an AI agent that interviews you, writes your resume file and deploys the site.
+> Work in progress. The template ships three themes: Terminal (a dark, animated look with a live shell in the hero), Linen (warm and serif) and Editorial (paper, ink and big serif headlines). The demo site shows Terminal at `/`, Linen at `/linen` and Editorial at `/editorial`, with fictional personas in `examples/`. Next on the roadmap: multiple languages, a PDF generated from the same data, and an AI agent that interviews you, writes your resume file and deploys the site.
 
 ## Features
 
 - One `resume.yaml` for everything on the page, based on [JSON Resume](https://jsonresume.org/schema) and checked when the site builds
-- Two themes that read the same file: **Terminal** (dark, animated, for tech roles) and **Linen** (warm and serif, for hotels, tourism and other service roles). Switch with one line: `theme: linen`
+- Three themes that read the same file: **Terminal** (dark, animated, for tech roles), **Linen** (warm and serif, for hotels, tourism and other service roles) and **Editorial** (a magazine-style page for management, consulting and corporate roles). Switch with one line, e.g. `theme: editorial`
 - Hero with a working terminal: `whoami`, `ls`, `contact`, `cv`, `kubectl get experience` and more, all answered from your data
 - Projects pulled from your GitHub repos at build time
 - One-page, ATS-friendly PDF served by the "Download CV" button
@@ -29,10 +29,10 @@ One resume file, many shapes. An open-source CV website template built with Next
    # → http://localhost:3000
    ```
 
-3. Edit `resume.yaml` at the root of the repo. It holds everything: your details, experience, education, skills, languages, projects and references. The demo persona, Alex Morgan, is fictional. Every field is documented in [`src/content/schema.ts`](src/content/schema.ts), and [`examples/linen-front-office.yaml`](examples/linen-front-office.yaml) is a full example for the Linen theme.
-4. Pick a look with `theme: terminal` or `theme: linen`.
+3. Edit `resume.yaml` at the root of the repo. It holds everything: your details, experience, education, skills, languages, projects and references. The demo persona, Alex Morgan, is fictional. Every field is documented in [`src/content/schema.ts`](src/content/schema.ts), and [`examples/`](examples) has a full example for the Linen and Editorial themes.
+4. Pick a look with `theme: terminal`, `theme: linen` or `theme: editorial`.
 5. Optional: put a photo in `public/` and set `basics.image: photo.jpg`. Without one, the site shows your initials.
-6. Update `scripts/cv/ats.html` and run `npm run cv:pdf` to rebuild the PDF (`npx playwright install chromium` the first time). Keep the file name in sync with `basics.cvFile`. The Linen theme has a "Save as PDF" button that prints the page instead.
+6. Update `scripts/cv/ats.html` and run `npm run cv:pdf` to rebuild the PDF (`npx playwright install chromium` the first time). Keep the file name in sync with `basics.cvFile`. Linen and Editorial have a "Save as PDF" button that prints the page instead.
 
 If something in `resume.yaml` is wrong, `npm run build` (and `npm run dev`) stops and lists what to fix, for example `work.0.startDate: use YYYY, YYYY-MM or YYYY-MM-DD, e.g. 2024-03`.
 

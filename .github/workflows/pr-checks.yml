@@ -34,6 +34,9 @@ jobs:
             chore
             revert
           requireScope: false
+          # Dependabot writes "Bump x from a to b"; its PRs carry this label.
+          ignoreLabels: |
+            dependencies
           subjectPattern: ^(?![A-Z]).+$
           subjectPatternError: |
             The summary "{subject}" must start with a lowercase letter, e.g. "feat(now): add platform stack".

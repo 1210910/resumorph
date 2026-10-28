@@ -100,6 +100,22 @@ export interface ProjectRepo {
   repo: string;
   /** Used when the repo has no GitHub description (or to override it). */
   blurb?: string;
+  /**
+   * Fetch live details (description, language, topics, stars, dates) from GitHub at build
+   * time. Defaults to true; set false for a project that isn't a public repo, and fill in
+   * the fields below by hand.
+   */
+  fromGithub?: boolean;
+  language?: string;
+  topics?: string[];
+  stars?: number;
+  /** Link for the project name; defaults to https://github.com/<repo>. */
+  url?: string;
+  homepage?: string;
+  /** ISO date, e.g. "2024-05-01". */
+  createdAt?: string;
+  /** ISO date of the last update. */
+  pushedAt?: string;
 }
 
 export interface Project {

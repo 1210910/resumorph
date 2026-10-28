@@ -16,18 +16,18 @@ interface GithubRepo {
   pushed_at: string;
 }
 
-/** What a project looks like when GitHub can't be reached: the hand-written facts only. */
-const offline = ({repo, blurb}: ProjectRepo): Project => ({
-  name: repo.split('/').pop() ?? repo,
-  repo,
-  url: `https://github.com/${repo}`,
-  description: blurb ?? '',
-  language: null,
-  topics: [],
-  stars: 0,
-  homepage: null,
-  createdAt: null,
-  pushedAt: null,
+/** A project from the hand-written facts only: used for `fromGithub: false` and when GitHub can't be reached. */
+const offline = (entry: ProjectRepo): Project => ({
+  name: entry.repo.split('/').pop() ?? entry.repo,
+  repo: entry.repo,
+  url: entry.url ?? `https://github.com/${entry.repo}`,
+  description: entry.blurb ?? '',
+  language: entry.language ?? null,
+  topics: entry.topics ?? [],
+  stars: entry.stars ?? 0,
+  homepage: entry.homepage ?? null,
+  createdAt: entry.createdAt ?? null,
+  pushedAt: entry.pushedAt ?? null,
 });
 
 const request = (repo: string, token?: string) =>
@@ -36,6 +36,7 @@ const request = (repo: string, token?: string) =>
   });
 
 const fetchOne = async (entry: ProjectRepo): Promise<Project> => {
+  if (entry.fromGithub === false) return offline(entry);
   const token = process.env.GITHUB_TOKEN;
   try {
     let res = await request(entry.repo, token);

@@ -1,5 +1,9 @@
 import {FC, memo, useCallback, useMemo, useState} from 'react';
 
+import {contact} from '../../../data/data';
+import {ContactType} from '../../../data/dataDef';
+import {secretHref} from '../../ProtectedContact';
+
 interface FormData {
   name: string;
   email: string;
@@ -32,10 +36,13 @@ const ContactForm: FC = memo(() => {
   const handleSendMessage = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      /**
-       * This is a good starting point to wire up your form submission logic
-       * */
-      console.log('Data to send: ', data);
+      // no backend on a static site: hand the message to the visitor's mail app
+      const emailItem = contact.items.find(item => item.type === ContactType.Email);
+      const mailto = emailItem && secretHref(emailItem);
+      if (!mailto) return;
+      const subject = encodeURIComponent(`Hello from ${data.name}`);
+      const body = encodeURIComponent(`${data.message}\n\n${data.name} <${data.email}>`);
+      window.location.href = `${mailto}?subject=${subject}&body=${body}`;
     },
     [data],
   );
@@ -46,9 +53,7 @@ const ContactForm: FC = memo(() => {
     <form className="flex h-full flex-col gap-y-4" method="POST" onSubmit={handleSendMessage}>
       <div>
         <h3 className="font-display text-lg font-semibold text-slate-100">Send a message</h3>
-        <p className="mt-1 text-sm text-slate-400">
-          The form is a starting point — the fields below are ready to wire up.
-        </p>
+        <p className="mt-1 text-sm text-slate-400">Opens your email app with the message ready to send.</p>
       </div>
 
       <input className={inputClasses} name="name" onChange={onChange} placeholder="Name" required type="text" />

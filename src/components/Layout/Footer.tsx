@@ -11,6 +11,7 @@ import {FC, memo} from 'react';
 
 import {contact, heroData, profile, SectionId, socialLinks} from '../../data/data';
 import {ContactType} from '../../data/dataDef';
+import ProtectedContact from '../ProtectedContact';
 import Reveal from '../Reveal';
 
 /** Same section order as the header's pill nav. */
@@ -23,6 +24,9 @@ const pageLinks: SectionId[] = [
 ];
 
 const label = (section: SectionId) => section.charAt(0).toUpperCase() + section.slice(1);
+
+const linkClass = 'min-w-0 transition-colors duration-300 hover:text-lime motion-reduce:transition-none';
+const textClass = 'block truncate text-sm font-medium text-slate-200 sm:text-base';
 
 const contactIcons: Partial<Record<ContactType, React.ElementType>> = {
   [ContactType.Email]: EnvelopeIcon,
@@ -123,28 +127,31 @@ const Footer: FC = memo(() => {
               <div className="flex flex-col gap-3">
                 {contactRows.map(item => {
                   const Icon = contactIcons[item.type as keyof typeof contactIcons];
-                  const value = (
-                    <span className="min-w-0">
-                      <span className="block truncate text-sm font-medium text-slate-200 sm:text-base">
-                        {item.text}
-                      </span>
-                      <span className="mt-0.5 block text-xs uppercase tracking-[0.16em] text-smoke-500">
-                        {item.type.charAt(0) + item.type.slice(1).toLowerCase()}
-                      </span>
+                  const caption = (
+                    <span className="mt-0.5 block text-xs uppercase tracking-[0.16em] text-smoke-500">
+                      {item.type.charAt(0) + item.type.slice(1).toLowerCase()}
                     </span>
                   );
                   return (
                     <span className="group flex items-start gap-3" key={item.type}>
                       {Icon && <Icon aria-hidden="true" className="mt-1 h-4 w-4 flex-none text-lime" />}
-                      {item.href ? (
+                      {item.secret ? (
+                        <ProtectedContact className={linkClass} item={item} textClassName={textClass}>
+                          {caption}
+                        </ProtectedContact>
+                      ) : item.href ? (
                         <a
-                          className="transition-colors duration-300 hover:text-lime motion-reduce:transition-none"
+                          className={linkClass}
                           href={item.href}
                           {...(item.href.startsWith('http') ? {rel: 'noreferrer', target: '_blank'} : {})}>
-                          {value}
+                          <span className={textClass}>{item.text}</span>
+                          {caption}
                         </a>
                       ) : (
-                        <span>{value}</span>
+                        <span className="min-w-0">
+                          <span className={textClass}>{item.text}</span>
+                          {caption}
+                        </span>
                       )}
                     </span>
                   );

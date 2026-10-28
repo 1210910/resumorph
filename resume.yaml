@@ -1,0 +1,188 @@
+# Your resume. Everything on the site comes from this file.
+#
+# - Format: YAML, based on JSON Resume (https://jsonresume.org/schema) with a few extras.
+# - Every field is documented in src/content/schema.ts. Optional sections can be removed.
+# - Dates are YYYY, YYYY-MM or YYYY-MM-DD. Leave endDate out for your current role.
+# - A mistake stops `npm run build` with a list of what to fix.
+# - More examples: examples/*.yaml
+#
+# Alex Morgan is a fictional demo persona: replace everything with your own details.
+
+# terminal: dark and animated, for tech roles · linen: warm and serif, for service roles
+theme: terminal
+
+basics:
+  name: Alex Morgan
+  label: Platform Engineer
+  initials: am
+  handle: alex
+  email: alex.morgan@example.com
+  summary: Platform Engineer building cloud-native infrastructure that lets product teams ship and run their services with confidence.
+  location:
+    city: Lisbon
+    country: Portugal
+  cvFile: Alex-Morgan-CV.pdf
+  profiles:
+    - network: GitHub
+      username: your-username
+      url: https://github.com/your-username
+    - network: LinkedIn
+      username: Alex Morgan
+      url: https://www.linkedin.com/in/your-profile/
+
+# Email and phone are kept out of the published HTML and shown when a visitor clicks
+# "Show email". This stops simple scrapers. Set to false to show them as plain links.
+privacy:
+  hideContactDetails: true
+
+about:
+  - >-
+    Platform Engineer who likes making the right thing the easy thing. I build self-service tooling on
+    Kubernetes and AWS so product teams can ship without waiting on tickets, and I care about clear docs,
+    boring deploys and good on-call nights. This is a fictional demo persona: replace it with your own story.
+
+now:
+  pitch: 'I build the internal platform product teams deploy on: they describe a service once, and the platform builds it, ships it through GitOps to Kubernetes, and provisions the cloud underneath as code.'
+  stack:
+    - layer: Interface
+      role: Teams describe and track services
+      tools: [Go, REST APIs, PostgreSQL]
+    - layer: Delivery
+      role: Builds, releases and rollouts
+      tools: [GitHub Actions, Argo CD, Helm]
+    - layer: Runtime
+      role: Clusters and networking
+      tools: [Kubernetes, Amazon EKS, Ingress NGINX]
+    - layer: Observability
+      role: Metrics, logs and alerts
+      tools: [Prometheus, Grafana, Loki]
+    - layer: Foundation
+      role: Cloud and infrastructure as code
+      tools: [AWS, Terraform]
+  highlights:
+    - title: Self-service platform
+      text: A service catalogue that turns one YAML file into a running, monitored service.
+      icon: server
+    - title: Reliable runtime
+      text: Multi-environment Kubernetes clusters with autoscaling and zero-downtime upgrades.
+      icon: chip
+    - title: GitOps delivery
+      text: Argo CD and GitHub Actions take every change from pull request to production.
+      icon: cycle
+    - title: Infrastructure as code
+      text: Reusable Terraform modules for networking, IAM, databases and storage.
+      icon: cloud
+
+# Newest first. Consecutive roles at the same company are grouped together.
+work:
+  - name: Acme Cloud
+    position: Platform Engineer
+    location: Lisbon, Portugal
+    startDate: 2024-03
+    highlights:
+      - '**Self-service platform:** Built a service catalogue that turns one YAML file into a deployed, monitored service, cutting new-service setup from days to under an hour.'
+      - '**Kubernetes:** Run multi-environment EKS clusters with autoscaling, Helm-packaged platform components and zero-downtime upgrades.'
+      - '**GitOps delivery:** Moved every team to Argo CD and reusable GitHub Actions workflows, from pull request to production.'
+      - '**Infrastructure as code:** Maintain Terraform modules for networking, IAM, databases and storage, reviewed through plan diffs.'
+    keywords: [Kubernetes, Amazon EKS, Helm, Argo CD, GitHub Actions, Terraform, Go, AWS]
+  - name: Globex
+    position: DevOps Engineer
+    location: Porto, Portugal
+    startDate: 2021-09
+    endDate: 2024-02
+    summary: Containerised a monolith into a dozen services, set up CI/CD and on-call dashboards, and wrote the runbooks the team still uses.
+  - name: Globex
+    position: Junior Software Engineer
+    location: Porto, Portugal
+    startDate: 2019-09
+    endDate: 2021-08
+    summary: Backend services in Python and Go for the billing team.
+
+education:
+  - institution: Example University
+    studyType: BSc
+    area: Computer Science
+    location: Lisbon, Portugal
+    startDate: 2016
+    endDate: 2019
+    summary: Distributed systems, networks and databases, with a final project on container scheduling.
+
+skills:
+  - name: Cloud (AWS)
+    keywords: [Amazon EKS, EC2, IAM, S3, RDS, CloudFront]
+  - name: Kubernetes & Platform
+    keywords: [Kubernetes, Helm, Docker, kubectl]
+  - name: Delivery & GitOps
+    keywords: [Argo CD, GitHub Actions, GitOps]
+  - name: Infrastructure as Code
+    keywords: [Terraform]
+  - name: Observability
+    keywords: [Prometheus, Grafana, Loki, OpenTelemetry]
+  - name: Languages
+    keywords: [Go, Python, Bash, TypeScript]
+  - name: Databases
+    keywords: [PostgreSQL, Redis]
+
+softSkills: [Communication, Mentoring, Ownership, Writing]
+
+languages:
+  - language: English
+    fluency: Native
+  - language: Portuguese
+    fluency: Fluent
+  - language: Spanish
+    fluency: Conversational
+
+interests: [Climbing, Photography, Board games, Cooking]
+
+# GitHub repos to feature, in order. With fromGithub (the default) the description,
+# language, topics and stars are fetched when the site builds. Set fromGithub: false
+# for anything that isn't a public repo and fill the details in by hand.
+projects:
+  - repo: your-username/service-catalog
+    fromGithub: false
+    description: Demo project. One YAML file per service becomes a deployed, monitored service on Kubernetes.
+    language: Go
+    topics: [kubernetes, platform-engineering, gitops]
+    stars: 128
+    startDate: 2024-04-02
+    updatedDate: 2026-10-01
+  - repo: your-username/terraform-aws-baseline
+    fromGithub: false
+    description: Demo project. Reusable Terraform modules for VPCs, IAM roles, RDS and S3 with sane defaults.
+    language: HCL
+    topics: [terraform, aws, infrastructure-as-code]
+    stars: 54
+    startDate: 2022-09-15
+    updatedDate: 2026-08-20
+  - repo: your-username/kube-cost-report
+    fromGithub: false
+    description: Demo project. A weekly Slack report of Kubernetes spend per team, built from Prometheus metrics.
+    language: Python
+    topics: [kubernetes, finops, prometheus]
+    stars: 23
+    startDate: 2023-06-10
+    updatedDate: 2026-05-12
+  - repo: 1210910/resumorph
+    description: 'This template: one resume file, many shapes.'
+
+# The demo references are fictional. On your own resume list real people only, with their
+# permission. Leave the list empty and the terminal theme shows just the companies marquee.
+references:
+  - name: Jordan Reyes
+    position: Head of Platform
+    company: Acme Cloud
+    reference: Alex turned our deploy process from a two-day ticket queue into something teams do themselves before lunch. Calm in incidents and generous with their time.
+    url: mailto:jordan.reyes@example.com
+  - name: Priya Natarajan
+    position: Engineering Manager
+    company: Globex
+    reference: The runbooks and dashboards Alex built are still how we run on-call three years later. They make the people around them better engineers.
+  - name: Sam Okafor
+    position: Senior Backend Engineer
+    company: Globex
+    reference: The person I ask first when something in production does not make sense.
+
+contact:
+  headline: Get in touch.
+  message: I'm always open to new opportunities, collaborations, or a chat about platform engineering. Drop me a line!

@@ -3,27 +3,49 @@ import {
   ArrowDownTrayIcon,
   ArrowPathIcon,
   BriefcaseIcon,
+  ChartBarIcon,
   CloudIcon,
+  CodeBracketIcon,
   CpuChipIcon,
   EnvelopeIcon,
+  GlobeAltIcon,
   MapIcon,
   ServerStackIcon,
+  ShieldCheckIcon,
+  SparklesIcon,
+  StarIcon,
+  UserGroupIcon,
 } from '@heroicons/react/24/outline';
+import {Fragment, ReactNode} from 'react';
 
+import DribbbleIcon from '../components/Icon/DribbbleIcon';
+import FacebookIcon from '../components/Icon/FacebookIcon';
 import GithubIcon from '../components/Icon/GithubIcon';
+import InstagramIcon from '../components/Icon/InstagramIcon';
 import LinkedInIcon from '../components/Icon/LinkedInIcon';
-/**
- * Type-only imports from dataDef
- */
+import StackOverflowIcon from '../components/Icon/StackOverflowIcon';
+import TwitterIcon from '../components/Icon/TwitterIcon';
+import {
+  ContactValue,
+  currentRole,
+  formatDate,
+  formatRange,
+  initialsOf,
+  languageLevel,
+  locationOf,
+  resume,
+} from '../content';
 import {
   About,
   CompanyExperience,
+  ContactItem,
   ContactSection,
   ContactType,
   Hero,
   HomepageMeta,
   Language,
   Now,
+  NowHighlight,
   Profile,
   ProjectRepo,
   Reference,
@@ -33,26 +55,34 @@ import {
 } from './dataDef';
 
 /**
+ * The terminal theme's view of resume.yaml. Edit resume.yaml, not this file: everything
+ * here is derived from it (src/content/schema.ts documents every field).
+ */
+
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+const {basics} = resume;
+const role = currentRole(resume);
+
+/**
  * Who this resume is about. Everything that names the person (header, hero, terminal
  * prompt, logo, footer, PDF file name, structured data) reads from here.
- * The demo persona is fictional: replace it with your own details.
  */
 export const profile: Profile = {
-  name: 'Alex Morgan',
-  initials: 'am',
-  handle: 'alex',
-  role: 'Platform Engineer',
-  location: 'Lisbon, Portugal',
-  cvFileName: 'Alex-Morgan-CV.pdf',
+  name: basics.name,
+  initials: basics.initials ?? initialsOf(basics.name).toLowerCase(),
+  handle: basics.handle ?? basics.name.split(/\s+/)[0].toLowerCase(),
+  role: basics.label,
+  location: locationOf(basics),
+  photo: basics.image && `${basePath}/${basics.image.replace(/^\//, '')}`,
+  cvFileName: basics.cvFile ?? `${basics.name.replace(/\s+/g, '-')}-CV.pdf`,
 };
 
 /**
- * Page meta data — Web Resume (single-source data file)
+ * Page meta data
  */
 export const homePageMeta: HomepageMeta = {
   title: `${profile.name} — ${profile.role}`,
-  description:
-    'Platform Engineer building cloud-native infrastructure that lets product teams ship and run their services with confidence.',
+  description: basics.summary,
 };
 
 /**
@@ -74,7 +104,7 @@ export type SectionId = (typeof SectionId)[keyof typeof SectionId];
  * Hero section
  */
 /** The ATS-friendly one-page PDF (public/), served under the Pages base path. */
-export const cvPdf = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/${profile.cvFileName}`;
+export const cvPdf = `${basePath}/${profile.cvFileName}`;
 
 export const heroData: Hero = {
   name: profile.name,
@@ -99,298 +129,212 @@ export const heroData: Hero = {
   ],
 };
 
+/** Icon names resume.yaml can use for `now.highlights`. */
+const HIGHLIGHT_ICONS: Record<string, NowHighlight['Icon']> = {
+  server: ServerStackIcon,
+  chip: CpuChipIcon,
+  cycle: ArrowPathIcon,
+  cloud: CloudIcon,
+  chart: ChartBarIcon,
+  shield: ShieldCheckIcon,
+  users: UserGroupIcon,
+  sparkles: SparklesIcon,
+  globe: GlobeAltIcon,
+  star: StarIcon,
+  briefcase: BriefcaseIcon,
+  code: CodeBracketIcon,
+};
+
 /**
  * Now section — the current role, front and centre
  */
 export const nowData: Now = {
-  company: 'Acme Cloud',
-  title: 'Platform Engineer',
-  since: 'Mar 2024',
-  pitch:
-    'I build the internal platform product teams deploy on: they describe a service once, and the platform builds it, ships it through GitOps to Kubernetes, and provisions the cloud underneath as code.',
-  stack: [
-    {
-      layer: 'Interface',
-      role: 'Teams describe and track services',
-      tools: ['Go', 'REST APIs', 'PostgreSQL'],
-    },
-    {
-      layer: 'Delivery',
-      role: 'Builds, releases and rollouts',
-      tools: ['GitHub Actions', 'Argo CD', 'Helm'],
-    },
-    {layer: 'Runtime', role: 'Clusters and networking', tools: ['Kubernetes', 'Amazon EKS', 'Ingress NGINX']},
-    {layer: 'Observability', role: 'Metrics, logs and alerts', tools: ['Prometheus', 'Grafana', 'Loki']},
-    {
-      layer: 'Foundation',
-      role: 'Cloud and infrastructure as code',
-      tools: ['AWS', 'Terraform'],
-    },
-  ],
-  highlights: [
-    {
-      title: 'Self-service platform',
-      text: 'A service catalogue that turns one YAML file into a running, monitored service.',
-      Icon: ServerStackIcon,
-    },
-    {
-      title: 'Reliable runtime',
-      text: 'Multi-environment Kubernetes clusters with autoscaling and zero-downtime upgrades.',
-      Icon: CpuChipIcon,
-    },
-    {
-      title: 'GitOps delivery',
-      text: 'Argo CD and GitHub Actions take every change from pull request to production.',
-      Icon: ArrowPathIcon,
-    },
-    {
-      title: 'Infrastructure as code',
-      text: 'Reusable Terraform modules for networking, IAM, databases and storage.',
-      Icon: CloudIcon,
-    },
-  ],
+  company: role.name,
+  title: role.position,
+  since: formatDate(role.startDate),
+  pitch: resume.now?.pitch ?? role.summary ?? basics.summary,
+  stack: resume.now?.stack ?? [],
+  highlights: (resume.now?.highlights ?? []).map(({title, text, icon}) => ({
+    title,
+    text,
+    Icon: HIGHLIGHT_ICONS[icon] ?? SparklesIcon,
+  })),
 };
-
-/**
- * About section
- */
-export const aboutData: About = {
-  profileImageSrc: undefined,
-  description: `Platform Engineer who likes making the right thing the easy thing. I build self-service tooling on Kubernetes and AWS so product teams can ship without waiting on tickets, and I care about clear docs, boring deploys and good on-call nights. This is a fictional demo persona: replace it with your own story.`,
-  aboutItems: [
-    {label: 'Location', text: profile.location, Icon: MapIcon},
-    {label: 'Current Role', text: `${nowData.title} — ${nowData.company}`, Icon: AcademicCapIcon},
-    {
-      label: 'Education',
-      text: 'BSc Computer Science (Example University, 2016–2019)',
-      Icon: AcademicCapIcon,
-    },
-    {label: 'Languages', text: 'English (native) · Portuguese · Spanish', Icon: MapIcon},
-  ],
-  hobbies: ['Climbing', 'Photography', 'Board games', 'Cooking'],
-};
-
-/**
- * Skills — single source of truth (update data.tsx to change the site).
- */
-export const skills: SkillGroup[] = [
-  {
-    name: 'Cloud (AWS)',
-    skills: ['Amazon EKS', 'EC2', 'IAM', 'S3', 'RDS', 'CloudFront'],
-  },
-  {
-    name: 'Kubernetes & Platform',
-    skills: ['Kubernetes', 'Helm', 'Docker', 'kubectl'],
-  },
-  {
-    name: 'Delivery & GitOps',
-    skills: ['Argo CD', 'GitHub Actions', 'GitOps'],
-  },
-  {
-    name: 'Infrastructure as Code',
-    skills: ['Terraform'],
-  },
-  {
-    name: 'Observability',
-    skills: ['Prometheus', 'Grafana', 'Loki', 'OpenTelemetry'],
-  },
-  {
-    name: 'Languages',
-    skills: ['Go', 'Python', 'Bash', 'TypeScript'],
-  },
-  {
-    name: 'Databases',
-    skills: ['PostgreSQL', 'Redis'],
-  },
-];
-
-/**
- * Soft skills — shown as pills under the technology stack.
- */
-export const softSkills = ['Communication', 'Mentoring', 'Ownership', 'Writing'];
-
-/**
- * Languages
- */
-export const languages: Language[] = [
-  {name: 'English', level: 'Native'},
-  {name: 'Portuguese', level: 'Fluent'},
-  {name: 'Spanish', level: 'Conversational'},
-];
-
-/**
- * Projects — the repos to feature, in order. Name, description, language, topics and
- * stars are fetched from GitHub when the site builds (src/lib/projects.ts); `blurb`
- * fills in when a repo has no description. Projects that aren't public repos set
- * `fromGithub: false` and list their details by hand, like the demo ones below.
- */
-export const projectRepos: ProjectRepo[] = [
-  {
-    repo: 'your-username/service-catalog',
-    fromGithub: false,
-    blurb: 'Demo project. One YAML file per service becomes a deployed, monitored service on Kubernetes.',
-    language: 'Go',
-    topics: ['kubernetes', 'platform-engineering', 'gitops'],
-    stars: 128,
-    createdAt: '2024-04-02',
-    pushedAt: '2026-10-01',
-  },
-  {
-    repo: 'your-username/terraform-aws-baseline',
-    fromGithub: false,
-    blurb: 'Demo project. Reusable Terraform modules for VPCs, IAM roles, RDS and S3 with sane defaults.',
-    language: 'HCL',
-    topics: ['terraform', 'aws', 'infrastructure-as-code'],
-    stars: 54,
-    createdAt: '2022-09-15',
-    pushedAt: '2026-08-20',
-  },
-  {
-    repo: 'your-username/kube-cost-report',
-    fromGithub: false,
-    blurb: 'Demo project. A weekly Slack report of Kubernetes spend per team, built from Prometheus metrics.',
-    language: 'Python',
-    topics: ['kubernetes', 'finops', 'prometheus'],
-    stars: 23,
-    createdAt: '2023-06-10',
-    pushedAt: '2026-05-12',
-  },
-  {repo: '1210910/resumorph', blurb: 'This template: one resume file, many shapes.'},
-];
 
 /**
  * Education
  */
-export const education: TimelineItem[] = [
-  {
-    date: '2016 – 2019',
-    location: 'Example University — Lisbon, Portugal',
-    title: 'BSc Computer Science',
-    content: (
-      <p className="text-sm text-slate-300">
-        Distributed systems, networks and databases, with a final project on container scheduling.
-      </p>
+export const education: TimelineItem[] = resume.education.map(item => ({
+  date: formatRange(item.startDate, item.endDate),
+  location: [item.institution, item.location].filter(Boolean).join(' — '),
+  title: `${item.studyType} ${item.area}`,
+  content: <p className="text-sm text-slate-300">{item.summary}</p>,
+}));
+
+/**
+ * About section
+ */
+const year = (value?: string) => value?.slice(0, 4) ?? '';
+const firstEducation = resume.education[0];
+
+export const aboutData: About = {
+  profileImageSrc: undefined,
+  description: resume.about.join('\n\n') || basics.summary,
+  aboutItems: [
+    {label: 'Location', text: profile.location, Icon: MapIcon},
+    {label: 'Current Role', text: `${role.position} — ${role.name}`, Icon: AcademicCapIcon},
+    ...(firstEducation
+      ? [
+          {
+            label: 'Education',
+            text: `${firstEducation.studyType} ${firstEducation.area} (${[
+              firstEducation.institution,
+              [year(firstEducation.startDate), year(firstEducation.endDate)].filter(Boolean).join('–'),
+            ]
+              .filter(Boolean)
+              .join(', ')})`,
+            Icon: AcademicCapIcon,
+          },
+        ]
+      : []),
+    ...(resume.languages.length
+      ? [
+          {
+            label: 'Languages',
+            text: resume.languages
+              .map(item => (languageLevel(item) === 5 ? `${item.language} (native)` : item.language))
+              .join(' · '),
+            Icon: MapIcon,
+          },
+        ]
+      : []),
+  ],
+  hobbies: resume.interests,
+};
+
+/**
+ * Skills
+ */
+export const skills: SkillGroup[] = resume.skills.map(group => ({name: group.name, skills: group.keywords}));
+
+/**
+ * Soft skills — shown as pills under the technology stack.
+ */
+export const softSkills = resume.softSkills;
+
+/**
+ * Languages
+ */
+export const languages: Language[] = resume.languages.map(item => ({name: item.language, level: item.fluency}));
+
+/**
+ * Projects — fetched from GitHub at build time unless `fromGithub: false` (src/lib/projects.ts).
+ */
+export const projectRepos: ProjectRepo[] = resume.projects.map(project => ({
+  repo: project.repo,
+  blurb: project.description,
+  fromGithub: project.fromGithub,
+  language: project.language,
+  topics: project.topics,
+  stars: project.stars,
+  url: project.url,
+  homepage: project.homepage,
+  createdAt: project.startDate,
+  pushedAt: project.updatedDate,
+}));
+
+/** "**Label:** rest" → <strong>Label:</strong> rest */
+const withBold = (text: string): ReactNode =>
+  text
+    .split(/(\*\*[^*]+\*\*)/)
+    .map((part, index) =>
+      part.startsWith('**') && part.endsWith('**') ? (
+        <strong key={index}>{part.slice(2, -2)}</strong>
+      ) : (
+        <Fragment key={index}>{part}</Fragment>
+      ),
+    );
+
+/**
+ * Experience — newest company first; consecutive roles at one company are nested (LinkedIn-style).
+ */
+export const experience: CompanyExperience[] = resume.work.reduce<CompanyExperience[]>((companies, job) => {
+  const position = {
+    title: job.position,
+    date: formatRange(job.startDate, job.endDate),
+    content: job.highlights.length ? (
+      <ul className="experience-list">
+        {job.highlights.map(item => (
+          <li key={item}>{withBold(item)}</li>
+        ))}
+      </ul>
+    ) : (
+      <p className="text-sm text-slate-300">{job.summary}</p>
     ),
-  },
-];
+    ...(job.keywords.length ? {tech: job.keywords} : {}),
+  };
+  const last = companies[companies.length - 1];
+  if (last?.company === job.name) {
+    last.positions.push(position);
+    if (job.location && !last.locations.includes(job.location)) last.locations.push(job.location);
+  } else {
+    companies.push({company: job.name, locations: job.location ? [job.location] : [], positions: [position]});
+  }
+  return companies;
+}, []);
 
 /**
- * Experience — newest company first; multiple positions can be nested under one company (LinkedIn-style).
+ * References
  */
-export const experience: CompanyExperience[] = [
-  {
-    company: 'Acme Cloud',
-    locations: ['Lisbon, Portugal'],
-    positions: [
-      {
-        date: 'Mar 2024 – Present',
-        title: 'Platform Engineer',
-        content: (
-          <ul className="experience-list">
-            <li>
-              <strong>Self-service platform:</strong> Built a service catalogue that turns one YAML file into a
-              deployed, monitored service, cutting new-service setup from days to under an hour.
-            </li>
-            <li>
-              <strong>Kubernetes:</strong> Run multi-environment EKS clusters with autoscaling, Helm-packaged platform
-              components and zero-downtime upgrades.
-            </li>
-            <li>
-              <strong>GitOps delivery:</strong> Moved every team to Argo CD and reusable GitHub Actions workflows, from
-              pull request to production.
-            </li>
-            <li>
-              <strong>Infrastructure as code:</strong> Maintain Terraform modules for networking, IAM, databases and
-              storage, reviewed through plan diffs.
-            </li>
-          </ul>
-        ),
-        tech: ['Kubernetes', 'Amazon EKS', 'Helm', 'Argo CD', 'GitHub Actions', 'Terraform', 'Go', 'AWS'],
-      },
-    ],
-  },
-  {
-    company: 'Globex',
-    locations: ['Porto, Portugal'],
-    positions: [
-      {
-        date: 'Sep 2021 – Feb 2024',
-        title: 'DevOps Engineer',
-        content: (
-          <p className="text-sm text-slate-300">
-            Containerised a monolith into a dozen services, set up CI/CD and on-call dashboards, and wrote the runbooks
-            the team still uses.
-          </p>
-        ),
-      },
-      {
-        date: 'Sep 2019 – Aug 2021',
-        title: 'Junior Software Engineer',
-        content: <p className="text-sm text-slate-300">Backend services in Python and Go for the billing team.</p>,
-      },
-    ],
-  },
-];
+export const references: Reference[] = resume.references.map(item => ({
+  name: item.name,
+  role: item.position,
+  company: item.company ?? '',
+  quote: item.reference,
+  href: item.url,
+}));
 
-/**
- * References — the demo ones are fictional. On your own resume list real people only, with
- * their permission; leave the list empty and the section shows just the companies marquee.
- * Shape: {name, role, company, quote?, href?}
- */
-export const references: Reference[] = [
-  {
-    name: 'Jordan Reyes',
-    role: 'Head of Platform',
-    company: 'Acme Cloud',
-    quote:
-      'Alex turned our deploy process from a two-day ticket queue into something teams do themselves before lunch. Calm in incidents and generous with their time.',
-    href: 'mailto:jordan.reyes@example.com',
-  },
-  {
-    name: 'Priya Natarajan',
-    role: 'Engineering Manager',
-    company: 'Globex',
-    quote:
-      'The runbooks and dashboards Alex built are still how we run on-call three years later. They make the people around them better engineers.',
-  },
-  {
-    name: 'Sam Okafor',
-    role: 'Senior Backend Engineer',
-    company: 'Globex',
-    quote: 'The person I ask first when something in production does not make sense.',
-  },
-];
+/** Brand icons for `basics.profiles[].network`; other networks still get a contact link. */
+const NETWORKS: Record<string, {type?: ContactType; Icon?: Social['Icon']; label: string}> = {
+  github: {type: ContactType.Github, Icon: GithubIcon, label: 'Github'},
+  linkedin: {type: ContactType.LinkedIn, Icon: LinkedInIcon, label: 'LinkedIn'},
+  twitter: {type: ContactType.Twitter, Icon: TwitterIcon, label: 'Twitter'},
+  x: {type: ContactType.Twitter, Icon: TwitterIcon, label: 'X'},
+  instagram: {type: ContactType.Instagram, Icon: InstagramIcon, label: 'Instagram'},
+  facebook: {type: ContactType.Facebook, Icon: FacebookIcon, label: 'Facebook'},
+  dribbble: {Icon: DribbbleIcon, label: 'Dribbble'},
+  stackoverflow: {Icon: StackOverflowIcon, label: 'Stack Overflow'},
+};
+
+const networkOf = (name: string) => NETWORKS[name.toLowerCase().replace(/[^a-z]/g, '')];
+
+/** Email and phone: revealed on click when the YAML loader encoded them, plain links otherwise. */
+const contactDetail = (type: ContactType, value: ContactValue): ContactItem =>
+  typeof value === 'string'
+    ? {type, text: value, href: type === ContactType.Phone ? `tel:${value.replace(/[^+\d]/g, '')}` : `mailto:${value}`}
+    : {type, text: type === ContactType.Phone ? 'Show phone' : 'Show email', secret: value.encoded};
 
 /**
  * Contact section
  */
 export const contact: ContactSection = {
-  headerText: 'Get in touch.',
-  description:
-    "I'm always open to new opportunities, collaborations, or a chat about platform engineering. Drop me a line!",
+  headerText: resume.contact.headline,
+  description: resume.contact.message ?? '',
   items: [
-    {
-      type: ContactType.Email,
-      text: 'alex.morgan@example.com',
-      href: 'mailto:alex.morgan@example.com',
-    },
-    {
-      type: ContactType.Github,
-      text: '@your-username',
-      href: 'https://github.com/your-username',
-    },
-    {
-      type: ContactType.LinkedIn,
-      text: 'Alex Morgan',
-      href: 'https://www.linkedin.com/in/your-profile/',
-    },
+    ...(basics.email ? [contactDetail(ContactType.Email, basics.email)] : []),
+    ...(basics.phone ? [contactDetail(ContactType.Phone, basics.phone)] : []),
+    ...basics.profiles.flatMap((item): ContactItem[] => {
+      const type = networkOf(item.network)?.type;
+      if (!type) return [];
+      return [{type, text: type === ContactType.Github ? `@${item.username}` : item.username, href: item.url}];
+    }),
   ],
 };
 
 /**
  * Social items
  */
-export const socialLinks: Social[] = [
-  {label: 'Github', Icon: GithubIcon, href: 'https://github.com/your-username'},
-  {label: 'LinkedIn', Icon: LinkedInIcon, href: 'https://www.linkedin.com/in/your-profile/'},
-];
+export const socialLinks: Social[] = basics.profiles.flatMap(item => {
+  const network = networkOf(item.network);
+  return network?.Icon ? [{label: network.label, Icon: network.Icon, href: item.url}] : [];
+});

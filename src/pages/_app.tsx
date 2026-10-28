@@ -6,6 +6,7 @@ import {useRouter} from 'next/router';
 import {memo, useEffect} from 'react';
 
 import CursorGlow from '../components/CursorGlow';
+import {resume} from '../content';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -31,8 +32,8 @@ const SiteBackground = memo(function SiteBackground() {
   );
 });
 
-// theme previews paint their own canvas, so they skip the terminal theme's backdrop and cursor glow
-const OWN_BACKDROP = ['/linen', '/hospitality'];
+// other themes paint their own canvas, so they skip the terminal theme's backdrop and cursor glow
+const OWN_BACKDROP = ['/linen', '/hospitality', ...(resume.theme === 'terminal' ? [] : ['/'])];
 
 const MyApp = memo(({Component, pageProps}: AppProps): JSX.Element => {
   const {pathname} = useRouter();

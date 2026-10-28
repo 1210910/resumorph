@@ -6,11 +6,12 @@ One resume file, many shapes. An open-source CV website template built with Next
 
 **Linen theme preview:** https://1210910.github.io/resumorph/linen/
 
-> Work in progress. Today the template ships one full theme (a dark, animated "terminal" look with a live shell in the hero). A preview of the Linen theme (warm and serif, made for hotels, tourism, restaurants and other service roles) lives at `/linen`, with its fictional persona in `src/data/personas/front-office.ts`. Next on the roadmap: a YAML content file every theme reads, an editorial theme for management, multiple languages, a PDF generated from the same data, and an AI agent that interviews you, writes your resume file and deploys the site.
+> Work in progress. The template ships two themes: Terminal (a dark, animated look with a live shell in the hero) and Linen (warm and serif). The demo site shows Terminal at `/` and Linen at `/linen`, with the fictional persona in `examples/linen-front-office.yaml`. Next on the roadmap: an editorial theme for management, multiple languages, a PDF generated from the same data, and an AI agent that interviews you, writes your resume file and deploys the site.
 
 ## Features
 
-- A single data file (`src/data/data.tsx`) for everything on the page
+- One `resume.yaml` for everything on the page, based on [JSON Resume](https://jsonresume.org/schema) and checked when the site builds
+- Two themes that read the same file: **Terminal** (dark, animated, for tech roles) and **Linen** (warm and serif, for hotels, tourism and other service roles). Switch with one line: `theme: linen`
 - Hero with a working terminal: `whoami`, `ls`, `contact`, `cv`, `kubectl get experience` and more, all answered from your data
 - Projects pulled from your GitHub repos at build time
 - One-page, ATS-friendly PDF served by the "Download CV" button
@@ -28,9 +29,19 @@ One resume file, many shapes. An open-source CV website template built with Next
    # → http://localhost:3000
    ```
 
-3. Edit `src/data/data.tsx`. Start with `profile` (name, initials, role, location), then the sections below it. The demo persona, Alex Morgan, is fictional.
-4. Optional: add a photo with `import photo from '../images/photo.jpg'` and set `profile.photo = photo`. Without one, the hero shows your initials.
-5. Update `scripts/cv/ats.html` and run `npm run cv:pdf` to rebuild the PDF (`npx playwright install chromium` the first time). Keep the file name in sync with `profile.cvFileName`.
+3. Edit `resume.yaml` at the root of the repo. It holds everything: your details, experience, education, skills, languages, projects and references. The demo persona, Alex Morgan, is fictional. Every field is documented in [`src/content/schema.ts`](src/content/schema.ts), and [`examples/linen-front-office.yaml`](examples/linen-front-office.yaml) is a full example for the Linen theme.
+4. Pick a look with `theme: terminal` or `theme: linen`.
+5. Optional: put a photo in `public/` and set `basics.image: photo.jpg`. Without one, the site shows your initials.
+6. Update `scripts/cv/ats.html` and run `npm run cv:pdf` to rebuild the PDF (`npx playwright install chromium` the first time). Keep the file name in sync with `basics.cvFile`. The Linen theme has a "Save as PDF" button that prints the page instead.
+
+If something in `resume.yaml` is wrong, `npm run build` (and `npm run dev`) stops and lists what to fix, for example `work.0.startDate: use YYYY, YYYY-MM or YYYY-MM-DD, e.g. 2024-03`.
+
+## Privacy
+
+- **Email and phone are hidden from scrapers by default.** They are encoded when the site builds and only appear when a visitor clicks "Show email" or "Show phone". The plain values are not in the HTML, the JavaScript or the structured data. Set `privacy.hideContactDetails: false` in `resume.yaml` to show them as plain links.
+- **AI crawlers are asked to stay out.** `public/robots.txt` blocks the known AI and scraping bots (GPTBot, CCBot, Bytespider…) and lets search engines in, and every page carries a `noai, noimageai` robots tag.
+- **Your repo is public too.** GitHub Pages on a free account needs a public repo, so anyone can read `resume.yaml` on GitHub. Only put in it what you are happy to publish. Leave the phone out if you can, or use an email alias you can replace.
+- None of this stops a determined person with a browser; it makes harvesting slow and unrewarding.
 
 ## Deploy to GitHub Pages
 

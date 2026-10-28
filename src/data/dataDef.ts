@@ -1,4 +1,3 @@
-import {StaticImageData} from 'next/image';
 import {FC, ForwardRefExoticComponent, SVGProps} from 'react';
 
 import {IconProps} from '../components/Icon/Icon';
@@ -28,8 +27,8 @@ export interface Profile {
   handle: string;
   role: string;
   location: string;
-  /** Imported image (e.g. `import photo from '../images/photo.jpg'`); without one the hero shows the initials. */
-  photo?: StaticImageData;
+  /** URL of the photo in public/ (from `basics.image`); without one the hero shows the initials. */
+  photo?: string;
   /** The PDF in public/ that the "Download CV" button serves. */
   cvFileName: string;
 }
@@ -236,6 +235,8 @@ export interface ContactItem {
   type: ContactType;
   text: string;
   href?: string;
+  /** Encoded value revealed on click, kept out of the static HTML (see ProtectedContact). */
+  secret?: number[];
 }
 
 export interface ContactValue {

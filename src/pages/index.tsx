@@ -11,9 +11,11 @@ import Now from '../components/Sections/Now';
 import Portfolio from '../components/Sections/Portfolio';
 import References from '../components/Sections/References';
 import Resume from '../components/Sections/Resume';
+import {resume} from '../content';
 import {homePageMeta} from '../data/data';
 import {Project} from '../data/dataDef';
 import {fetchProjects, ProjectsContext} from '../lib/projects';
+import LinenPage from '../themes/linen/LinenPage';
 
 // eslint-disable-next-line react-memo/require-memo
 const Header = dynamic(() => import('../components/Sections/Header'), {ssr: false});
@@ -24,6 +26,8 @@ interface HomeProps {
 
 const Home: FC<HomeProps> = memo(({projects}) => {
   const {title, description} = homePageMeta;
+  // `theme:` in resume.yaml picks the look
+  if (resume.theme === 'linen') return <LinenPage resume={resume} />;
   return (
     <ProjectsContext.Provider value={projects}>
       <Page description={description} title={title}>

@@ -28,3 +28,8 @@ declare module '*.mp4' {
   const value: string;
   export default value;
 }
+
+declare module '*.yaml' {
+  const value: unknown;
+  export default value;
+}

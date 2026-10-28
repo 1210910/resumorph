@@ -1,7 +1,7 @@
 /* eslint-env node */
 // Renders scripts/cv/ats.html to public/<profile.cvFileName>: one column, real text,
 // standard headings, so applicant tracking systems parse it cleanly. Keep the output
-// name in sync with `profile.cvFileName` in src/data/data.tsx.
+// name in sync with `basics.cvFile` in resume.yaml.
 // Run after editing the HTML: `npx playwright install chromium` once, then `node scripts/cv/build-pdf.js`.
 const path = require('path');
 const {chromium} = require('playwright');

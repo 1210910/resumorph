@@ -18,7 +18,9 @@ const About: FC = memo(() => {
         <SectionHeader eyebrow="~/about" title="About me" />
 
         <div className="glass p-8 md:p-12">
-          <p className="prose prose-sm max-w-3xl text-slate-300 sm:prose-base prose-p:leading-relaxed">{description}</p>
+          <p className="prose prose-sm max-w-3xl whitespace-pre-line text-slate-300 sm:prose-base prose-p:leading-relaxed">
+            {description}
+          </p>
 
           <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
             {aboutItems.map((item, idx) => (

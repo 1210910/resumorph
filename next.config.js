@@ -11,6 +11,17 @@ const nextConfig = {
   },
 
   poweredByHeader: false,
+
+  // resume.yaml is imported like a module; the loader parses it at build time
+  turbopack: {
+    rules: {
+      '*.yaml': {loaders: [require.resolve('./scripts/yaml-loader.js')], as: '*.js'},
+    },
+  },
+  webpack: config => {
+    config.module.rules.push({test: /\.ya?ml$/, use: require.resolve('./scripts/yaml-loader.js')});
+    return config;
+  },
 };
 
 module.exports = nextConfig;

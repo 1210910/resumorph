@@ -1,0 +1,131 @@
+# Example resume for the linen theme: a hotel front office manager.
+# Clara Venn and every hotel, person and number here are made up.
+# Copy what you need into resume.yaml at the root of the repo.
+
+theme: linen
+
+basics:
+  name: Clara Venn
+  label: Front Office & Guest Experience Manager
+  email: clara.venn@example.com
+  summary: Nine years at the front desk of city hotels and resorts, from night auditor to running a team of 18. I turn arrival into the part of the stay guests talk about.
+  location:
+    city: Porto
+    country: Portugal
+  availability: Open to new roles from January
+  profiles:
+    - network: LinkedIn
+      username: Clara Venn
+      url: https://www.linkedin.com/in/your-profile/
+
+about:
+  - I started on night shifts at a family-run guesthouse in the Douro valley and have worked my way through reception, reservations and guest relations at four properties since. Today I lead the front office of a 160-room design hotel in Porto.
+  - 'I care about the details guests notice and the ones they never see: a smooth check-in, a room that is ready on time, a complaint that turns into a five-star review. I train teams to own those moments, and I use the numbers (occupancy, upsell, review scores) to see what is working.'
+
+stats:
+  - value: '9'
+    label: years in hotels
+  - value: '4.8'
+    label: average guest rating
+  - value: '18'
+    label: people in my team
+  - value: '5'
+    label: languages spoken
+
+work:
+  - name: Hotel Ribeira Azul
+    position: Front Office & Guest Experience Manager
+    description: 4-star design hotel · 160 rooms
+    location: Porto, Portugal
+    startDate: 2022-04
+    highlights:
+      - Lead reception, concierge and guest relations, a team of 18 across three shifts.
+      - Raised the average review score from 4.4 to 4.8 in two years by redesigning arrival and follow-up.
+      - Launched a pre-arrival upsell programme that now brings in 9% of room revenue.
+      - Moved the hotel from a legacy PMS to Mews with no lost reservations.
+  - name: Quinta do Mar Resort & Spa
+    position: Guest Relations Supervisor
+    description: 5-star resort · 212 rooms
+    location: Lagos, Algarve
+    startDate: 2019-03
+    endDate: 2022-03
+    highlights:
+      - Looked after VIP and repeat guests, weddings and corporate groups of up to 120 people.
+      - Built the resort’s first guest-recovery playbook, halving open complaints at checkout.
+      - Trained seasonal reception staff each spring on service standards and Opera PMS.
+  - name: Lisbon Gardens Hotel
+    position: Receptionist, then Reservations Agent
+    description: 4-star city hotel · 98 rooms
+    location: Lisbon, Portugal
+    startDate: 2017-06
+    endDate: 2019-02
+    highlights:
+      - Handled check-in, check-out and phone and email reservations in four languages.
+      - Promoted to reservations after one year; managed group blocks and OTA rate parity.
+  - name: Casa do Vale Guesthouse
+    position: Night Auditor
+    description: Family-run guesthouse · 14 rooms
+    location: Douro Valley, Portugal
+    startDate: 2016-07
+    endDate: 2017-05
+    highlights:
+      - 'Ran the night shift alone: audit, late arrivals, breakfast set-up and the odd emergency.'
+
+education:
+  - institution: Example School of Hospitality and Tourism
+    studyType: BA
+    area: Hotel Management
+    startDate: 2013
+    endDate: 2016
+
+skills:
+  - name: Guest experience
+    keywords: [VIP and repeat guests, Complaint recovery, Concierge, Events and groups, Online reviews]
+  - name: Operations
+    keywords: [Team leadership, Shift planning, Training, Upselling, Budgeting, Housekeeping liaison]
+  - name: Systems
+    keywords: [Mews, Oracle Opera PMS, SiteMinder, Booking.com Extranet, Revinate, Excel]
+
+languages:
+  - language: Portuguese
+    fluency: Native
+  - language: English
+    fluency: Fluent (C1)
+  - language: Spanish
+    fluency: Fluent (C1)
+  - language: French
+    fluency: Intermediate (B2)
+  - language: German
+    fluency: Basic (A2)
+    level: 2
+
+certificates:
+  - name: Certified Front Desk Manager
+    issuer: Example Hospitality Institute
+    date: 2023
+  - name: Revenue Management Essentials
+    issuer: Example Online Academy
+    date: 2021
+  - name: First Aid at Work
+    issuer: Example Red Cross
+    date: 2024
+
+references:
+  - name: Rui Teixeira
+    position: General Manager
+    company: Hotel Ribeira Azul
+    reference: Clara is the reason our arrival scores went up. Guests mention her team by name, and she knows every one of them.
+  - name: Claire Dubois
+    position: Director of Rooms
+    company: Quinta do Mar Resort & Spa
+    reference: Calm in a full house, generous with her team and relentless about details. I would hire her again tomorrow.
+
+contact:
+  headline: Let’s talk about your guests.
+  message: References and my phone number are available on request. The quickest way to reach me is email.
+
+titles:
+  about: Hospitality is a craft of small moments.
+  experience: Where I have welcomed guests
+  skills: What I bring to the front desk
+  references: In the words of my managers

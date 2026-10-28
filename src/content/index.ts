@@ -3,6 +3,9 @@ import {Resume, ResumeLanguage, ResumeSchema} from './schema';
 
 export type {Resume, ResumeLanguage, ResumeWork} from './schema';
 
+/** A contact detail as plain text, or encoded by the YAML loader to keep it off the page. */
+export type ContactValue = string | {encoded: number[]};
+
 /**
  * Validates a parsed resume file. A mistake fails the build with a list of what to fix,
  * e.g. `work.0.startDate: use YYYY, YYYY-MM or YYYY-MM-DD, e.g. 2024-03`.

@@ -11,7 +11,9 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''; // must match next.con
 // schema.org Person — lets search engines show name, role and employer for the name on the resume
 const currentRole = aboutData.aboutItems.find(item => item.label === 'Current Role')?.text ?? '';
 const [jobTitle, employer] = currentRole.split(' — ');
-const email = contact.items.find(item => item.type === ContactType.Email)?.text;
+// only a plain (unprotected) address goes into the structured data
+const emailItem = contact.items.find(item => item.type === ContactType.Email);
+const email = emailItem && !emailItem.secret ? emailItem.text : undefined;
 const personJsonLd = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -34,6 +36,8 @@ const Page: NextPage<PropsWithChildren<HomepageMeta>> = memo(({children, title, 
       <Head>
         <title>{title}</title>
         <meta content={description} name="description" />
+        {/* opt out of AI training; robots.txt and Cloudflare do the actual blocking */}
+        <meta content="noai, noimageai" name="robots" />
 
         <link href={`${SITE_BASE}${pathname}`} key="canonical" rel="canonical" />
 

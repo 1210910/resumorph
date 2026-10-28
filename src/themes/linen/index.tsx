@@ -3,6 +3,7 @@ import Link from 'next/link';
 import {FC, memo, PropsWithChildren, useCallback, useMemo} from 'react';
 
 import LinkedInIcon from '../../components/Icon/LinkedInIcon';
+import ProtectedContact from '../../components/ProtectedContact';
 import Reveal from '../../components/Reveal';
 import {LinenLanguage, LinenView} from './view';
 
@@ -283,12 +284,11 @@ const LinenTheme: FC<LinenThemeProps> = memo(({resume, demo}) => {
             {resume.contact.message && <p className="mx-auto mt-4 max-w-lg">{resume.contact.message}</p>}
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               {resume.email && (
-                <a
+                <ProtectedContact
                   className="inline-flex items-center gap-2 rounded-full bg-[#e8dccb] px-5 py-3 text-sm font-medium text-[#1f3b33] transition-opacity hover:opacity-90"
-                  href={`mailto:${resume.email}`}>
-                  <EnvelopeIcon className="h-4 w-4" />
-                  {resume.email}
-                </a>
+                  item={resume.email}>
+                  <EnvelopeIcon className="order-first h-4 w-4" />
+                </ProtectedContact>
               )}
               {resume.linkedin && (
                 <a

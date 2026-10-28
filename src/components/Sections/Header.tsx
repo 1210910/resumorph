@@ -8,6 +8,7 @@ import {contact, profile, SectionId, socialLinks} from '../../data/data';
 import {ContactType} from '../../data/dataDef';
 import {useNavObserver} from '../../hooks/useNavObserver';
 import Logo from '../Logo';
+import ProtectedContact from '../ProtectedContact';
 import Spotlit from '../Spotlit';
 import ThemeToggle from '../ThemeToggle';
 
@@ -24,6 +25,7 @@ const navSections = [
 ];
 
 const ctaHref = '#contact';
+const emailItem = contact.items.find(item => item.type === ContactType.Email);
 
 const navLabel = (section: SectionId) => section.charAt(0).toUpperCase() + section.slice(1);
 
@@ -54,8 +56,6 @@ const CtaLink: React.FC<{className?: string; iconClassName?: string}> = memo(({c
 
 const [firstName, ...lastNameParts] = profile.name.split(' ');
 const lastName = lastNameParts.join(' ');
-const email = contact.items.find(item => item.type === ContactType.Email);
-
 const Header = memo(() => {
   const [isOpen, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -277,9 +277,9 @@ const Header = memo(() => {
               </div>
 
               <div className="mt-auto border-t border-white/10 px-6 py-5 text-xs leading-relaxed text-slate-500">
-                <a className="text-slate-400 transition-colors hover:text-lime" href={email?.href}>
-                  {email?.text}
-                </a>
+                {emailItem && (
+                  <ProtectedContact className="text-slate-400 transition-colors hover:text-lime" item={emailItem} />
+                )}
                 <br />
                 {profile.location} · © {new Date().getFullYear()}
               </div>

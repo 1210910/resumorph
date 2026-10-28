@@ -9,6 +9,7 @@ import InstagramIcon from '../../Icon/InstagramIcon';
 import LinkedInIcon from '../../Icon/LinkedInIcon';
 import TwitterIcon from '../../Icon/TwitterIcon';
 import Section from '../../Layout/Section';
+import ProtectedContact from '../../ProtectedContact';
 import Reveal from '../../Reveal';
 import SectionHeader from '../../SectionHeader';
 import ContactForm from './ContactForm';
@@ -50,7 +51,12 @@ const Contact: FC = memo(() => {
                       </span>
                       <div className="min-w-0">
                         <dt className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">{srLabel}</dt>
-                        {item.href ? (
+                        {item.secret ? (
+                          <ProtectedContact
+                            className="block truncate text-sm font-medium text-slate-200 transition-colors hover:text-lime sm:text-base"
+                            item={item}
+                          />
+                        ) : item.href ? (
                           <a
                             className="block truncate text-sm font-medium text-slate-200 transition-colors hover:text-lime sm:text-base"
                             href={item.href}

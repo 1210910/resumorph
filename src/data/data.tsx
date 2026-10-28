@@ -25,7 +25,16 @@ import InstagramIcon from '../components/Icon/InstagramIcon';
 import LinkedInIcon from '../components/Icon/LinkedInIcon';
 import StackOverflowIcon from '../components/Icon/StackOverflowIcon';
 import TwitterIcon from '../components/Icon/TwitterIcon';
-import {currentRole, formatDate, formatRange, initialsOf, languageLevel, locationOf, resume} from '../content';
+import {
+  ContactValue,
+  currentRole,
+  formatDate,
+  formatRange,
+  initialsOf,
+  languageLevel,
+  locationOf,
+  resume,
+} from '../content';
 import {
   About,
   CompanyExperience,
@@ -299,6 +308,12 @@ const NETWORKS: Record<string, {type?: ContactType; Icon?: Social['Icon']; label
 
 const networkOf = (name: string) => NETWORKS[name.toLowerCase().replace(/[^a-z]/g, '')];
 
+/** Email and phone: revealed on click when the YAML loader encoded them, plain links otherwise. */
+const contactDetail = (type: ContactType, value: ContactValue): ContactItem =>
+  typeof value === 'string'
+    ? {type, text: value, href: type === ContactType.Phone ? `tel:${value.replace(/[^+\d]/g, '')}` : `mailto:${value}`}
+    : {type, text: type === ContactType.Phone ? 'Show phone' : 'Show email', secret: value.encoded};
+
 /**
  * Contact section
  */
@@ -306,10 +321,8 @@ export const contact: ContactSection = {
   headerText: resume.contact.headline,
   description: resume.contact.message ?? '',
   items: [
-    ...(basics.email ? [{type: ContactType.Email, text: basics.email, href: `mailto:${basics.email}`}] : []),
-    ...(basics.phone
-      ? [{type: ContactType.Phone, text: basics.phone, href: `tel:${basics.phone.replace(/[^+\d]/g, '')}`}]
-      : []),
+    ...(basics.email ? [contactDetail(ContactType.Email, basics.email)] : []),
+    ...(basics.phone ? [contactDetail(ContactType.Phone, basics.phone)] : []),
     ...basics.profiles.flatMap((item): ContactItem[] => {
       const type = networkOf(item.network)?.type;
       if (!type) return [];

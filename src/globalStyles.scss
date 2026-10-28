@@ -1,0 +1,1160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===========================================================================
+   AI Platform Engineer portfolio — ink + violet (landonorris.com-inspired)
+   Ink #0A0A0B base · Signal #8B5CF6 · Smoke neutrals for muted text
+   One accent, no gradients. Surfaces are flat near-black with hairlines.
+   =========================================================================== */
+
+:root {
+  --color-ink: #0a0a0b;
+  --color-ink-raised: #101012;
+  --accent: #8b5cf6;
+  --card-bg: rgba(17, 17, 19, 0.6);
+  --card-border: rgba(255, 255, 255, 0.08);
+}
+
+/* ── base ─────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  scrollbar-color: #26262a #0a0a0b;
+}
+
+body {
+  color: #d4d4d4;
+  background-color: #0a0a0b;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* browser surfaces — themed from the palette */
+::selection {
+  background: var(--accent);
+  color: var(--color-ink);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0b;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid #0a0a0b;
+  border-radius: 999px;
+  background: #26262a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a42;
+}
+
+/* ── fixed background layers ──────────────────────────────────────── */
+/* A single fixed near-black base with two barely-there washes: one neutral,
+   one lime-tinted — quiet depth, zero color noise. */
+.site-background {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  background-color: #0a0a0b;
+  background-image: radial-gradient(ellipse 72% 52% at 50% -12%, rgba(255, 255, 255, 0.05), transparent 65%),
+    radial-gradient(ellipse 58% 44% at 86% 112%, rgba(139, 92, 246, 0.05), transparent 65%);
+}
+
+/* large soft washes (drifting very slowly) */
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(110px);
+  opacity: 0.4;
+  will-change: transform;
+  animation: orb-drift 32s ease-in-out infinite alternate;
+}
+
+.orb-1 {
+  top: -18%;
+  left: -12%;
+  width: 58vw;
+  height: 58vw;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 65%);
+}
+
+.orb-2 {
+  right: -14%;
+  bottom: -22%;
+  width: 52vw;
+  height: 52vw;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 65%);
+  animation-duration: 38s;
+  animation-delay: -12s;
+}
+
+/* fine dot grid, faded toward the edges */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -5;
+  pointer-events: none;
+  opacity: 0.45;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 32%, black 0%, transparent 78%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 32%, black 0%, transparent 78%);
+}
+
+/* ── surfaces ─────────────────────────────────────────────────────── */
+/* Flat near-black card. One declared elevation: hairline border, no blur. */
+.glass {
+  position: relative;
+  border-radius: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, background 0.3s ease;
+}
+
+/* interactive card — lifts, edge turns signal-lime; the press state mirrors
+   the hover so a tap on touch reads the same as a hover with a mouse */
+.glass-card {
+  @extend .glass;
+
+  &:hover,
+  &:active {
+    transform: translateY(-4px);
+    border-color: rgba(139, 92, 246, 0.35);
+    box-shadow: 0 22px 56px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(139, 92, 246, 0.08);
+  }
+}
+
+/* pill / chip — shared by skills, references, about items */
+.glass-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.375rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #c9c9c4;
+  transition: all 0.25s ease;
+
+  &:hover,
+  &:active {
+    border-color: rgba(139, 92, 246, 0.45);
+    background: rgba(139, 92, 246, 0.08);
+    color: #f2f2ef;
+    transform: translateY(-2px);
+  }
+}
+
+/* ── navigation bar ───────────────────────────────────────────────── */
+/* Scroll-aware header. A soft top scrim over the hero; gains depth,
+   blur and a hairline once the page is scrolled. */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  pointer-events: none;
+
+  background: linear-gradient(180deg, rgba(10, 10, 11, 0.55) 0%, rgba(10, 10, 11, 0.22) 70%, rgba(10, 10, 11, 0.08) 100%);
+  backdrop-filter: blur(8px) saturate(1.1);
+  -webkit-backdrop-filter: blur(8px) saturate(1.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transition: background 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease;
+}
+
+.site-header[data-scrolled='true'] {
+  background: rgba(10, 10, 11, 0.82);
+  backdrop-filter: blur(22px) saturate(1.2);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* hairline underline — neutral center-fade, gains presence on scroll */
+.site-header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.22) 30%, rgba(255, 255, 255, 0.22) 70%, transparent);
+  opacity: 0.35;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.site-header[data-scrolled='true']::after {
+  opacity: 1;
+}
+
+/* brand monogram — solid signal, the one loud square on the bar */
+.brand-mark {
+  position: relative;
+  overflow: visible;
+  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.45));
+}
+
+/* the outline turns one side (360/7°) on hover, like a helm wheel */
+.logo-hex {
+  /* the heptagon's true centre (32, 33) in its 64×64 viewBox — the bounding-box
+     centre sits higher, which would knock it off-axis while turning */
+  transform-box: view-box;
+  transform-origin: 32px 33px;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .logo-hex {
+  transform: rotate(51.43deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-hex {
+    transition: none;
+  }
+}
+
+/* hero portrait: clipped to the logo's heptagon (points / 64) */
+.hero-photo {
+  overflow: hidden;
+  clip-path: polygon(50% 5.5%, 86.1% 22.8%, 95% 61.9%, 70% 93.1%, 30% 93.1%, 5% 61.9%, 13.9% 22.8%);
+}
+
+.hero-photo-ring {
+  stroke: #8b5cf6;
+  filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.55));
+}
+
+.pod-badge {
+  background: rgba(16, 16, 18, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+html.light .pod-badge {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* pill nav links — a solid lime underline marks the active section */
+.nav-link {
+  position: relative;
+  color: #9c9c9c;
+  transition: color 0.25s ease, background-color 0.25s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 3px;
+    height: 1.5px;
+    border-radius: 9999px;
+    background: var(--accent);
+    opacity: 0;
+    transform: scaleX(0.5);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  &:hover {
+    color: #f2f2ef;
+    background: rgba(255, 255, 255, 0.05);
+
+    &::after {
+      opacity: 0.6;
+      transform: scaleX(1);
+    }
+  }
+
+  &[aria-current='true'] {
+    color: #f2f2ef;
+    background: rgba(255, 255, 255, 0.06);
+
+    &::after {
+      opacity: 1;
+      transform: scaleX(1);
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.45);
+    }
+  }
+}
+
+/* reading progress along the bar's bottom edge (width driven via scaleX) */
+.header-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
+  pointer-events: none;
+}
+
+/* mobile drawer — near-black panel with a faint lime edge */
+.drawer-panel {
+  position: absolute;
+  background: rgba(13, 13, 15, 0.97);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  box-shadow: 28px 0 80px rgba(0, 0, 0, 0.7);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.35) 35%, rgba(139, 92, 246, 0.35) 65%, transparent);
+  }
+}
+
+/* ── typography helpers ───────────────────────────────────────────── */
+/* solid accent text — the single word-per-headline move */
+.text-accent {
+  color: var(--accent);
+}
+
+/* Oversized display title. Stacked words (multi-word titles) are rendered
+   by SectionHeader; the last word is colored via .text-accent in the markup. */
+.section-title {
+  font-family: var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif;
+  font-size: clamp(2.4rem, 8vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+  color: #f4f4f1;
+  text-transform: uppercase;
+}
+
+/* centered description sitting under the title */
+.section-description {
+  margin-top: 2.4rem;
+}
+
+/* lowercase letter-spaced eyebrow above a section title —
+   the "mclaren f1 since 2019" pattern */
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0 auto 1.1rem;
+  font-family: var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: lowercase;
+  color: #858585;
+
+  &::before {
+    content: '';
+    width: 1.15rem;
+    height: 1px;
+    background: var(--accent);
+  }
+}
+
+/* terminal-path label above a section title: "~/resume" */
+.section-path {
+  display: inline-block;
+  margin: 0 auto 1.1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #9c9c9c;
+}
+
+/* left-aligned sub-heading inside a block — small lime diamond tick */
+.block-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #f4f4f1;
+
+  &::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    background: var(--accent);
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.35);
+  }
+}
+
+/* ── section ambience ─────────────────────────────────────────────── */
+/* A faint radial glow behind each section's title area. Neutral by default;
+   the hero gets the faint lime wash. Always pointer-transparent. */
+.section-glow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.section-glow::before {
+  content: '';
+  position: absolute;
+  top: -12%;
+  left: 50%;
+  width: min(760px, 95vw);
+  height: 440px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.03), transparent 70%);
+}
+
+#hero .section-glow::before {
+  top: 24%;
+  background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.05), transparent 70%);
+}
+
+/* ── scroll-reveal ────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── marquee band (references / partners) ─────────────────────────── */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 14%, black 86%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 14%, black 86%, transparent);
+}
+
+/* ── accessibility ────────────────────────────────────────────────── */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #0a0a0b, 0 0 0 4px rgba(139, 92, 246, 0.7);
+}
+
+/* ── reduced motion ───────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .orb,
+  .animate-orb-drift,
+  .animate-fade-up,
+  .animate-pulse-dot,
+  .animate-bounce-soft,
+  .animate-marquee {
+    animation: none !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .glass-card:hover,
+  .glass-card:active,
+  .glass-pill:hover,
+  .glass-pill:active {
+    transform: none;
+  }
+
+  .site-header,
+  .site-header::after,
+  .nav-link,
+  .nav-link::after,
+  .glass-pill,
+  .section-title,
+  .drawer-slide,
+  .drawer-backdrop {
+    transition: none !important;
+  }
+}
+
+/* ── experience bullets + per-role tech tags ─────────────────────── */
+.experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+
+  > li {
+    position: relative;
+    padding-left: 1.1rem;
+  }
+
+  > li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    height: 0.35rem;
+    width: 0.35rem;
+    border-radius: 9999px;
+    background: #8b5cf6;
+    opacity: 0.8;
+  }
+
+  strong {
+    color: #e2e8f0;
+    font-weight: 600;
+  }
+}
+
+.tech-tag {
+  border-radius: 9999px;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  background: rgba(139, 92, 246, 0.08);
+  padding: 0.15rem 0.65rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  color: #c4b5fd;
+}
+
+/* ── "Now" platform stack: layers on a rail, a pulse flowing top → bottom ── */
+.platform-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  /* the rail behind the numbered nodes */
+  &::before {
+    content: '';
+    position: absolute;
+    left: calc(1.1rem + 1.25rem);
+    top: 1.5rem;
+    bottom: 1.5rem;
+    width: 1px;
+    background: linear-gradient(to bottom, rgba(139, 92, 246, 0.6), rgba(255, 255, 255, 0.08));
+  }
+
+  /* the travelling pulse */
+  &::after {
+    content: '';
+    position: absolute;
+    left: calc(1.1rem + 1.25rem - 3px);
+    top: 1.5rem;
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background: #a78bfa;
+    box-shadow: 0 0 12px 3px rgba(139, 92, 246, 0.7);
+    animation: platform-pulse 4.5s ease-in-out infinite;
+  }
+}
+
+@keyframes platform-pulse {
+  0% {
+    top: 1.5rem;
+    opacity: 0;
+  }
+
+  10%,
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    top: calc(100% - 1.5rem);
+    opacity: 0;
+  }
+}
+
+.platform-layer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.9rem 1.1rem;
+  transition: border-color 0.3s ease, background 0.3s ease;
+
+  &:hover {
+    border-color: rgba(139, 92, 246, 0.35);
+    background: rgba(139, 92, 246, 0.05);
+  }
+
+  &:hover .platform-node {
+    border-color: rgba(167, 139, 250, 0.8);
+    box-shadow: 0 0 16px rgba(139, 92, 246, 0.45);
+  }
+}
+
+.platform-node {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(139, 92, 246, 0.45);
+  background: #0d0b16;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  color: #c4b5fd;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* purple accents light up under the pointer */
+.tech-tag {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+}
+
+.tech-tag:hover {
+  border-color: rgba(167, 139, 250, 0.7);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
+  color: #ede9fe;
+}
+
+.glass-pill:hover,
+.glass-pill:active {
+  box-shadow: 0 0 14px rgba(139, 92, 246, 0.3);
+}
+
+.glass-card:hover .icon-badge {
+  border-color: rgba(167, 139, 250, 0.7);
+  box-shadow: 0 0 16px rgba(139, 92, 246, 0.45);
+}
+
+.icon-badge {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .platform-stack::after {
+    display: none;
+  }
+
+  .platform-layer {
+    transition: none;
+  }
+}
+
+/* ── hero terminal ─────────────────────────────────────────────────── */
+.hero-terminal {
+  background: rgba(8, 8, 12, 0.82);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(139, 92, 246, 0.12);
+}
+
+.term-accent {
+  color: #a78bfa;
+}
+
+.term-ok {
+  color: #4ade80;
+}
+
+.term-warn {
+  color: #fbbf24;
+}
+
+.term-error {
+  color: #f87171;
+}
+
+.term-link {
+  color: #c4b5fd;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: #ede9fe;
+  }
+}
+
+.term-input {
+  caret-color: #a78bfa;
+
+  /* the whole window already reads as the focus target */
+  &:focus,
+  &:focus-visible {
+    box-shadow: none;
+  }
+}
+
+.term-dot {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.hero-terminal:focus-within {
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(167, 139, 250, 0.45);
+}
+
+.term-body {
+  scrollbar-width: thin;
+}
+
+/* ── light theme (html.light, toggled in the header) ─────────────────
+   Same layout and violet signal on warm paper. Tailwind neutrals used for
+   text and hairlines are remapped here instead of in every component. */
+html.light {
+  --color-ink: #f6f5f2;
+  --color-ink-raised: #ffffff;
+  --accent: #7c3aed;
+  --card-bg: rgba(255, 255, 255, 0.78);
+  --card-border: rgba(28, 25, 23, 0.09);
+
+  scrollbar-color: #cfcbc4 #f6f5f2;
+
+  body {
+    color: #292524;
+    background-color: #f6f5f2;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f6f5f2;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-color: #f6f5f2;
+    background: #cfcbc4;
+  }
+
+  .site-background {
+    background-color: #f6f5f2;
+    background-image: radial-gradient(ellipse 72% 52% at 50% -12%, rgba(124, 58, 237, 0.06), transparent 65%),
+      radial-gradient(ellipse 58% 44% at 86% 112%, rgba(124, 58, 237, 0.06), transparent 65%);
+  }
+
+  .orb-1 {
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 65%);
+  }
+
+  .grid-overlay {
+    background-image: radial-gradient(rgba(28, 25, 23, 0.1) 1px, transparent 1px);
+  }
+
+  .hero-vignette {
+    background: radial-gradient(ellipse 62% 60% at 50% 44%, rgba(246, 245, 242, 0.75) 0%, transparent 78%);
+  }
+
+  .glass {
+    box-shadow: 0 10px 30px rgba(28, 25, 23, 0.06);
+  }
+
+  .glass-card:hover,
+  .glass-card:active {
+    box-shadow: 0 20px 44px rgba(28, 25, 23, 0.1), 0 0 0 1px rgba(124, 58, 237, 0.12);
+  }
+
+  .glass-pill {
+    border-color: rgba(28, 25, 23, 0.12);
+    background: rgba(255, 255, 255, 0.7);
+    color: #44403c;
+
+    &:hover,
+    &:active {
+      color: #1c1917;
+    }
+  }
+
+  .site-header {
+    background: linear-gradient(180deg, rgba(246, 245, 242, 0.7) 0%, rgba(246, 245, 242, 0.3) 70%, rgba(246, 245, 242, 0.1) 100%);
+    box-shadow: none;
+  }
+
+  .site-header[data-scrolled='true'] {
+    background: rgba(246, 245, 242, 0.88);
+    box-shadow: 0 10px 30px rgba(28, 25, 23, 0.08);
+  }
+
+  .site-header::after {
+    background: linear-gradient(to right, transparent, rgba(28, 25, 23, 0.14) 30%, rgba(28, 25, 23, 0.14) 70%, transparent);
+  }
+
+  .nav-link {
+    color: #57534e;
+
+    &:hover,
+    &[aria-current='true'] {
+      color: #1c1917;
+      background: rgba(28, 25, 23, 0.05);
+    }
+  }
+
+  .drawer-panel {
+    background: rgba(250, 249, 246, 0.98);
+    border-right-color: rgba(28, 25, 23, 0.1);
+    box-shadow: 28px 0 80px rgba(28, 25, 23, 0.18);
+  }
+
+  .section-title,
+  .block-title {
+    color: #1c1917;
+  }
+
+  .section-eyebrow,
+  .section-path {
+    color: #6b645d;
+  }
+
+  .section-glow::before {
+    background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.04), transparent 70%);
+  }
+
+  :focus-visible {
+    box-shadow: 0 0 0 2px #f6f5f2, 0 0 0 4px rgba(124, 58, 237, 0.7);
+  }
+
+  .experience-list strong {
+    color: #1c1917;
+  }
+
+  .tech-tag {
+    border-color: rgba(124, 58, 237, 0.25);
+    background: rgba(124, 58, 237, 0.07);
+    color: #5b21b6;
+
+    &:hover {
+      color: #4c1d95;
+      box-shadow: 0 0 12px rgba(124, 58, 237, 0.25);
+    }
+  }
+
+  .platform-stack::before {
+    background: linear-gradient(to bottom, rgba(124, 58, 237, 0.5), rgba(28, 25, 23, 0.08));
+  }
+
+  .platform-layer {
+    border-color: rgba(28, 25, 23, 0.08);
+    background: rgba(255, 255, 255, 0.6);
+
+    &:hover {
+      border-color: rgba(124, 58, 237, 0.35);
+      background: rgba(124, 58, 237, 0.04);
+    }
+  }
+
+  .platform-node {
+    background: #ffffff;
+    color: #5b21b6;
+  }
+
+  .hero-terminal {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 24px 60px rgba(28, 25, 23, 0.1), 0 0 0 1px rgba(124, 58, 237, 0.14);
+  }
+
+  .term-accent {
+    color: #6d28d9;
+  }
+
+  .term-ok {
+    color: #15803d;
+  }
+
+  .term-warn {
+    color: #a16207;
+  }
+
+  .term-error {
+    color: #b91c1c;
+  }
+
+  .term-link {
+    color: #5b21b6;
+
+    &:hover {
+      color: #4c1d95;
+    }
+  }
+
+  .term-input {
+    caret-color: #6d28d9;
+
+    &:focus,
+    &:focus-visible {
+      box-shadow: none;
+    }
+  }
+
+  .term-dot {
+    background: rgba(28, 25, 23, 0.16);
+  }
+
+  .hero-terminal:focus-within {
+    box-shadow: 0 24px 60px rgba(28, 25, 23, 0.1), 0 0 0 1px rgba(124, 58, 237, 0.45);
+  }
+
+  /* Tailwind neutrals → warm ink on paper (each ≥4.5:1 on #f6f5f2) */
+  .text-white,
+  .text-slate-100 {
+    color: #1c1917;
+  }
+
+  .text-slate-200 {
+    color: #292524;
+  }
+
+  .text-slate-300 {
+    color: #44403c;
+  }
+
+  .text-slate-400,
+  .text-smoke-300 {
+    color: #57534e;
+  }
+
+  .text-slate-500,
+  .text-smoke-400,
+  .text-smoke-500 {
+    color: #6b645d;
+  }
+
+  .border-white\/5,
+  .border-white\/10 {
+    border-color: rgba(28, 25, 23, 0.1);
+  }
+
+  .border-white\/20,
+  .border-white\/25,
+  .hover\:border-white\/25:hover {
+    border-color: rgba(28, 25, 23, 0.2);
+  }
+
+  .bg-white\/5,
+  .bg-white\/\[0\.04\],
+  .bg-white\/\[0\.06\] {
+    background-color: rgba(28, 25, 23, 0.04);
+  }
+
+  .bg-white\/15,
+  .bg-white\/30 {
+    background-color: rgba(28, 25, 23, 0.15);
+  }
+
+  .via-white\/10 {
+    --tw-gradient-via: rgba(28, 25, 23, 0.1);
+  }
+
+  .bg-ink-950\/90,
+  .bg-ink-950\/70 {
+    background-color: rgba(246, 245, 242, 0.85);
+  }
+
+  .bg-ink-900\/60 {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .hover\:text-white:hover,
+  .group:hover .group-hover\:text-white {
+    color: #1c1917;
+  }
+}
+
+/* ── hero aurora ──────────────────────────────────────────────────── */
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.22;
+  will-change: transform;
+}
+
+.aurora-a {
+  top: -10%;
+  left: -8%;
+  width: 55vw;
+  height: 55vw;
+  max-width: 760px;
+  max-height: 760px;
+  background: radial-gradient(circle, #8b5cf6 0%, transparent 65%);
+  animation: aurora-a 22s ease-in-out infinite alternate;
+}
+
+.aurora-b {
+  right: -10%;
+  bottom: -20%;
+  width: 50vw;
+  height: 50vw;
+  max-width: 700px;
+  max-height: 700px;
+  background: radial-gradient(circle, #4f46e5 0%, transparent 65%);
+  animation: aurora-b 28s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-a {
+  to {
+    transform: translate(28vw, 18vh) scale(1.15);
+  }
+}
+
+@keyframes aurora-b {
+  to {
+    transform: translate(-30vw, -16vh) scale(0.9);
+  }
+}
+
+html.light .aurora-blob {
+  opacity: 0.14;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob {
+    animation: none;
+  }
+}
+
+/* ── print fallback ───────────────────────────────────────────────── */
+@media print {
+  .site-background,
+  .orb,
+  .grid-overlay,
+  .particle-field,
+  .hero-aurora,
+  .section-glow,
+  .header-progress,
+  .nav-link::after {
+    display: none !important;
+  }
+
+  .glass,
+  .glass-card,
+  .glass-pill,
+  .tech-tag,
+  .site-header {
+    border-color: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: #ffffff !important;
+    color: #1e1e1e !important;
+  }
+
+  /* the header's ambient scrim would otherwise tint the printed bar */
+  .site-header {
+    background-image: none !important;
+  }
+
+  .text-accent,
+  .section-title,
+  .section-eyebrow,
+  .block-title,
+  h1,
+  h2,
+  h3 {
+    color: #111111 !important;
+    -webkit-text-fill-color: #111111 !important;
+    background-image: none !important;
+  }
+
+  a {
+    color: #5b21b6 !important;
+    text-decoration: underline;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #1e1e1e !important;
+  }
+
+  .experience-list strong {
+    color: #111111 !important;
+  }
+}
+
+/* ── mobile performance ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .orb {
+    filter: blur(70px);
+    opacity: 0.24;
+  }
+
+  .grid-overlay {
+    display: none;
+  }
+
+  .glass,
+  .glass-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(12, 12, 14, 0.85);
+  }
+
+  /* the opaque fallback above is dark-only: light mode needs paper, or dark
+     cards end up holding dark text */
+  html.light .glass:not(.hero-terminal),
+  html.light .glass-card {
+    background: rgba(255, 255, 255, 0.94);
+  }
+
+  .drawer-panel {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(10, 10, 11, 0.96);
+  }
+}
+
+/* ── form controls ────────────────────────────────────────────────── */
+.field-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: #e9e9e6;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+
+  &::placeholder {
+    color: #858585;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: rgba(139, 92, 246, 0.55);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.14);
+  }
+
+  &:hover:not(:focus) {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+}
+
+/* light mode: visible field edges on white cards */
+html.light .field-input {
+  border-color: rgba(28, 25, 23, 0.22);
+  background: #ffffff;
+  color: #1c1917;
+
+  &::placeholder {
+    color: #8a837b;
+  }
+
+  &:hover:not(:focus) {
+    border-color: rgba(28, 25, 23, 0.36);
+  }
+
+  &:focus {
+    border-color: #7c3aed;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.16);
+  }
+}

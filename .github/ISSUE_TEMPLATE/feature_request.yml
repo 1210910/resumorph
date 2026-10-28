@@ -1,0 +1,16 @@
+name: Feature or theme request
+description: Suggest a feature, a section, or a theme for another field
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would it help with
+      description: Who is it for (field, role) and what can't they do today?
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+      description: Links or sketches of resumes you like are welcome.

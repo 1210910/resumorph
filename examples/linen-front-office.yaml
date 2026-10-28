@@ -114,10 +114,12 @@ references:
   - name: Rui Teixeira
     position: General Manager
     company: Hotel Ribeira Azul
+    rating: 5
     reference: Clara is the reason our arrival scores went up. Guests mention her team by name, and she knows every one of them.
   - name: Claire Dubois
     position: Director of Rooms
     company: Quinta do Mar Resort & Spa
+    rating: 5
     reference: Calm in a full house, generous with her team and relentless about details. I would hire her again tomorrow.
 
 contact:

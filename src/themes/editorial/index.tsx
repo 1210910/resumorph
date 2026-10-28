@@ -1,12 +1,15 @@
-import {ArrowDownTrayIcon, EnvelopeIcon} from '@heroicons/react/24/outline';
+import {ArrowDownTrayIcon, DocumentTextIcon, EnvelopeIcon} from '@heroicons/react/24/outline';
 import classNames from 'classnames';
-import {FC, memo, PropsWithChildren, useCallback, useMemo} from 'react';
+import {FC, memo, PropsWithChildren, useCallback, useMemo, useState} from 'react';
 
 import LinkedInIcon from '../../components/Icon/LinkedInIcon';
 import ProtectedContact from '../../components/ProtectedContact';
 import Reveal from '../../components/Reveal';
+import ThemeToggle from '../../components/ThemeToggle';
 import DemoBar from '../DemoBar';
 import {ThemeView} from '../view';
+import PrintPreview from './PrintPreview';
+import {ChapterRail, CountUp, ReadingProgress, useActiveChapter} from './Reading';
 
 /**
  * Editorial theme — a printed-magazine CV: paper and ink, one oxblood accent, big serif
@@ -54,6 +57,9 @@ interface EditorialThemeProps {
 
 const EditorialTheme: FC<EditorialThemeProps> = memo(({resume, demo}) => {
   const print = useCallback(() => window.print(), []);
+  const [preview, setPreview] = useState(false);
+  const openPreview = useCallback(() => setPreview(true), []);
+  const closePreview = useCallback(() => setPreview(false), []);
 
   // number the chapters that have content, in page order
   const chapters = useMemo(() => {
@@ -73,11 +79,19 @@ const EditorialTheme: FC<EditorialThemeProps> = memo(({resume, demo}) => {
     );
   }, [resume]);
 
+  const rail = useMemo(() => [...Object.values(chapters), {id: 'contact', label: 'Contact', number: '—'}], [chapters]);
+  const active = useActiveChapter(rail.map(chapter => chapter.id));
   const year = new Date().getFullYear();
 
   return (
     <div className="min-h-screen bg-ed-paper font-sans text-ed-muted">
+      {/* A4 with the margins the print preview assumes; only this page prints this way */}
+      <style>{'@page { size: A4; margin: 12mm; }'}</style>
       {demo && <DemoBar className="bg-ed-ink text-ed-paper" current="editorial" />}
+
+      {preview && <PrintPreview onClose={closePreview} onPrint={print} />}
+
+      <ChapterRail active={active} chapters={rail} />
 
       {/* running header, like the top line of a magazine page */}
       <header className="no-print sticky top-0 z-30 border-b border-ed-rule bg-ed-paper/95 backdrop-blur">
@@ -86,27 +100,41 @@ const EditorialTheme: FC<EditorialThemeProps> = memo(({resume, demo}) => {
             {resume.name}
           </a>
           <ul className={`${smallCaps} hidden gap-7 lg:flex`}>
-            {Object.values(chapters).map(chapter => (
+            {rail.map(chapter => (
               <li key={chapter.id}>
-                <a className="transition-colors hover:text-ed-accent" href={`#${chapter.id}`}>
+                <a
+                  className={classNames(
+                    'transition-colors hover:text-ed-accent',
+                    chapter.id === active && 'text-ed-accent',
+                  )}
+                  href={`#${chapter.id}`}>
                   {chapter.label}
                 </a>
               </li>
             ))}
-            <li>
-              <a className="transition-colors hover:text-ed-accent" href="#contact">
-                Contact
-              </a>
-            </li>
           </ul>
-          <button
-            className={`${smallCaps} inline-flex items-center gap-2 border border-ed-ink px-3 py-2 text-ed-ink transition-colors hover:bg-ed-ink hover:text-ed-paper`}
-            onClick={print}
-            type="button">
-            <ArrowDownTrayIcon className="h-3.5 w-3.5" />
-            Save as PDF
-          </button>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <ThemeToggle
+              className="grid h-9 w-9 place-items-center text-ed-ink transition-colors hover:text-ed-accent"
+              iconClassName="h-4 w-4"
+            />
+            <button
+              className={`${smallCaps} hidden items-center gap-2 px-3 py-2 text-ed-ink transition-colors hover:text-ed-accent md:inline-flex`}
+              onClick={openPreview}
+              type="button">
+              <DocumentTextIcon className="h-3.5 w-3.5" />
+              Preview
+            </button>
+            <button
+              className={`${smallCaps} inline-flex items-center gap-2 border border-ed-ink px-3 py-2 text-ed-ink transition-colors hover:bg-ed-ink hover:text-ed-paper`}
+              onClick={print}
+              type="button">
+              <ArrowDownTrayIcon className="h-3.5 w-3.5" />
+              Save as PDF
+            </button>
+          </div>
         </nav>
+        <ReadingProgress />
       </header>
 
       <main id="top">
@@ -157,7 +185,7 @@ const EditorialTheme: FC<EditorialThemeProps> = memo(({resume, demo}) => {
                     <dt className="sr-only">{stat.label}</dt>
                     <dd>
                       <span className="block font-serif text-5xl leading-none text-ed-ink tabular-nums">
-                        {stat.value}
+                        <CountUp value={stat.value} />
                       </span>
                       <span className="mt-3 block text-sm">{stat.label}</span>
                     </dd>
@@ -291,7 +319,7 @@ const EditorialTheme: FC<EditorialThemeProps> = memo(({resume, demo}) => {
         )}
 
         <section
-          className="scroll-mt-16 bg-ed-ink px-4 py-16 text-ed-paper sm:px-6 md:py-24 print:border-t print:border-ed-ink print:bg-transparent print:py-6 print:text-ed-ink"
+          className="scroll-mt-16 bg-ed-ink px-4 py-16 text-ed-paper sm:px-6 md:py-24 paper:border-t paper:border-ed-ink paper:bg-transparent paper:py-6 paper:text-ed-ink"
           id="contact">
           <div className="mx-auto max-w-6xl">
             <p className={`${smallCaps} opacity-70`}>Contact</p>

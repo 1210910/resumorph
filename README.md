@@ -15,7 +15,9 @@ One resume file, many shapes. An open-source CV website template built with Next
 - Hero with a working terminal: `whoami`, `ls`, `contact`, `cv`, `kubectl get experience` and more, all answered from your data
 - Projects pulled from your GitHub repos at build time
 - One-page, ATS-friendly PDF served by the "Download CV" button
-- Light and dark mode, `prefers-reduced-motion` support, mobile layout
+- Light and dark mode in every theme: `appearance: system | light | dark` sets the default and a sun/moon button lets visitors switch
+- A signature piece per theme: Terminal's live shell, Linen's hotel key card that unlocks your email, and Editorial's reading progress, chapter rail, counting stats and A4 print preview
+- `prefers-reduced-motion` support, mobile layout
 - Static export: no server, free hosting on GitHub Pages
 
 ## Quick start
@@ -30,9 +32,9 @@ One resume file, many shapes. An open-source CV website template built with Next
    ```
 
 3. Edit `resume.yaml` at the root of the repo. It holds everything: your details, experience, education, skills, languages, projects and references. The demo persona, Alex Morgan, is fictional. Every field is documented in [`src/content/schema.ts`](src/content/schema.ts), and [`examples/`](examples) has a full example for the Linen and Editorial themes.
-4. Pick a look with `theme: terminal`, `theme: linen` or `theme: editorial`.
+4. Pick a look with `theme: terminal`, `theme: linen` or `theme: editorial`, and light or dark with `appearance: system`, `light` or `dark`.
 5. Optional: put a photo in `public/` and set `basics.image: photo.jpg`. Without one, the site shows your initials.
-6. Update `scripts/cv/ats.html` and run `npm run cv:pdf` to rebuild the PDF (`npx playwright install chromium` the first time). Keep the file name in sync with `basics.cvFile`. Linen and Editorial have a "Save as PDF" button that prints the page instead.
+6. Update `scripts/cv/ats.html` and run `npm run cv:pdf` to rebuild the PDF (`npx playwright install chromium` the first time). Keep the file name in sync with `basics.cvFile`. Linen and Editorial have a "Save as PDF" button that prints the page instead, and Editorial adds a Preview button that shows the A4 pages first.
 
 If something in `resume.yaml` is wrong, `npm run build` (and `npm run dev`) stops and lists what to fix, for example `work.0.startDate: use YYYY, YYYY-MM or YYYY-MM-DD, e.g. 2024-03`.
 

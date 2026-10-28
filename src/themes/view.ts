@@ -29,7 +29,7 @@ export interface ThemeView {
   languages: ThemeLanguage[];
   /** Certificates first, then education. */
   training: Array<{title: string; issuer: string; year: string}>;
-  references: Array<{quote: string; name: string; role: string}>;
+  references: Array<{quote: string; name: string; role: string; rating?: number}>;
   /** Encoded and revealed on click unless privacy.hideContactDetails is off. */
   email?: ContactItem;
   linkedin?: string;
@@ -93,7 +93,14 @@ export const toThemeView = (resume: Resume): ThemeView => {
     ],
     references: resume.references.flatMap(item =>
       item.reference
-        ? [{quote: item.reference, name: item.name, role: [item.position, item.company].filter(Boolean).join(', ')}]
+        ? [
+            {
+              quote: item.reference,
+              name: item.name,
+              role: [item.position, item.company].filter(Boolean).join(', '),
+              rating: item.rating,
+            },
+          ]
         : [],
     ),
     email:

@@ -103,6 +103,8 @@ const reference = z.object({
   reference: text.optional(),
   /** A link or mailto: for the name. */
   url: z.string().optional(),
+  /** 1 to 5 stars, shown by the Linen theme as a guest-review card. Leave out for no stars. */
+  rating: z.number().int().min(1).max(5).optional(),
 });
 
 const nowSection = z.object({
@@ -128,6 +130,12 @@ export const ResumeSchema = z.object({
    * for service roles) or editorial (magazine-style, for management and corporate roles).
    */
   theme: z.enum(['terminal', 'linen', 'editorial']).default('terminal'),
+
+  /**
+   * Light or dark on a visitor's first visit: system follows their device. Every theme has a
+   * sun/moon button, and a visitor's own choice is remembered over this.
+   */
+  appearance: z.enum(['system', 'light', 'dark']).default('system'),
 
   basics: z.object({
     name: text,

@@ -1,11 +1,13 @@
 import {ArrowDownTrayIcon, EnvelopeIcon, MapPinIcon} from '@heroicons/react/24/outline';
+import {StarIcon} from '@heroicons/react/24/solid';
 import {FC, memo, PropsWithChildren, useCallback, useMemo} from 'react';
 
 import LinkedInIcon from '../../components/Icon/LinkedInIcon';
-import ProtectedContact from '../../components/ProtectedContact';
 import Reveal from '../../components/Reveal';
+import ThemeToggle from '../../components/ThemeToggle';
 import DemoBar from '../DemoBar';
 import {ThemeLanguage, ThemeView} from '../view';
+import KeyCard from './KeyCard';
 
 /**
  * Linen theme — warm linen, bottle green and terracotta, with a serif display face.
@@ -44,6 +46,15 @@ const Dots: FC<{language: ThemeLanguage}> = memo(({language}) => (
   </span>
 ));
 
+/** Guest-review stars for references that set a rating. */
+const Stars: FC<{rating: number}> = memo(({rating}) => (
+  <span aria-label={`${rating} out of 5 stars`} className="flex gap-1" role="img">
+    {[1, 2, 3, 4, 5].map(step => (
+      <StarIcon className={`h-5 w-5 ${step <= rating ? 'text-[#d8a43a]' : 'text-linen-line'}`} key={step} />
+    ))}
+  </span>
+));
+
 interface LinenThemeProps {
   resume: ThemeView;
   /** Show the template's theme switcher bar (demo site only). */
@@ -77,11 +88,17 @@ const LinenTheme: FC<LinenThemeProps> = memo(({resume, demo}) => {
               </li>
             ))}
           </ul>
-          <a
-            className="rounded-full bg-linen-ink px-4 py-2 text-sm font-medium text-linen-bg transition-opacity hover:opacity-85"
-            href="#contact">
-            Get in touch
-          </a>
+          <div className="flex items-center gap-2">
+            <ThemeToggle
+              className="grid h-10 w-10 place-items-center rounded-full text-linen-ink transition-colors hover:text-linen-accent"
+              iconClassName="h-5 w-5"
+            />
+            <a
+              className="rounded-full bg-linen-ink px-4 py-2 text-sm font-medium text-linen-bg transition-opacity hover:opacity-85"
+              href="#contact">
+              Get in touch
+            </a>
+          </div>
         </nav>
       </header>
 
@@ -254,10 +271,15 @@ const LinenTheme: FC<LinenThemeProps> = memo(({resume, demo}) => {
             <div className="grid gap-6 md:grid-cols-2">
               {resume.references.map(reference => (
                 <figure className="rounded-2xl border border-linen-line bg-linen-surface p-7" key={reference.name}>
-                  <span aria-hidden="true" className="font-serif text-5xl leading-none text-linen-accent">
-                    “
-                  </span>
-                  <blockquote className="-mt-3 font-serif text-xl leading-snug text-linen-ink">
+                  {reference.rating ? (
+                    <Stars rating={reference.rating} />
+                  ) : (
+                    <span aria-hidden="true" className="font-serif text-5xl leading-none text-linen-accent">
+                      “
+                    </span>
+                  )}
+                  <blockquote
+                    className={`font-serif text-xl leading-snug text-linen-ink ${reference.rating ? 'mt-4' : '-mt-3'}`}>
                     {reference.quote}
                   </blockquote>
                   <figcaption className="mt-5 text-sm">
@@ -274,14 +296,15 @@ const LinenTheme: FC<LinenThemeProps> = memo(({resume, demo}) => {
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#e9a37f]">Contact</p>
             <h2 className="mt-3 font-serif text-4xl text-white sm:text-5xl">{resume.contact.headline}</h2>
             {resume.contact.message && <p className="mx-auto mt-4 max-w-lg">{resume.contact.message}</p>}
+            {resume.email && (
+              <KeyCard
+                availability={resume.availability}
+                email={resume.email}
+                initials={resume.initials}
+                name={resume.name}
+              />
+            )}
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              {resume.email && (
-                <ProtectedContact
-                  className="inline-flex items-center gap-2 rounded-full bg-[#e8dccb] px-5 py-3 text-sm font-medium text-[#1f3b33] transition-opacity hover:opacity-90"
-                  item={resume.email}>
-                  <EnvelopeIcon className="order-first h-4 w-4" />
-                </ProtectedContact>
-              )}
               {resume.linkedin && (
                 <a
                   className="inline-flex items-center gap-2 rounded-full border border-[#e8dccb]/40 px-5 py-3 text-sm font-medium transition-colors hover:border-white hover:text-white"

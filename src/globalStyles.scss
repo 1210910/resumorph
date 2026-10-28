@@ -1233,3 +1233,90 @@ html.theme-linen {
     }
   }
 }
+
+/* ── editorial theme (/editorial) ────────────────────────────────────
+   Paper and ink with one oxblood accent, like a printed magazine page.
+   RGB channels so Tailwind's ed-* utilities can apply opacity. Follows the OS theme. */
+html.theme-editorial {
+  --ed-paper: 250 248 243;
+  --ed-ink: 20 20 19;
+  --ed-muted: 82 80 76;
+  --ed-rule: 20 20 19 / 0.16;
+  --ed-accent: 155 28 28;
+
+  scrollbar-color: #c9c5bc #faf8f3;
+
+  body {
+    color: rgb(var(--ed-muted));
+    background-color: rgb(var(--ed-paper));
+  }
+
+  ::selection {
+    background: rgb(var(--ed-accent));
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--ed-paper));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-color: rgb(var(--ed-paper));
+    background: #c9c5bc;
+  }
+
+  /* drop cap on the first profile paragraph */
+  .ed-dropcap > p:first-child::first-letter {
+    float: left;
+    margin: 0.35rem 0.6rem 0 0;
+    font-size: 4.2rem;
+    line-height: 0.8;
+    color: rgb(var(--ed-accent));
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html.theme-editorial {
+    --ed-paper: 18 18 17;
+    --ed-ink: 236 232 225;
+    --ed-muted: 168 163 154;
+    --ed-rule: 236 232 225 / 0.16;
+    --ed-accent: 232 110 98;
+
+    scrollbar-color: #3a3835 #121211;
+
+    ::-webkit-scrollbar-thumb {
+      background: #3a3835;
+    }
+  }
+}
+
+/* "Save as PDF" prints a clean, paper-white CV */
+@media print {
+  html.theme-editorial {
+    --ed-paper: 255 255 255;
+    --ed-ink: 20 20 19;
+    --ed-muted: 82 80 76;
+    --ed-rule: 20 20 19 / 0.16;
+    --ed-accent: 155 28 28;
+
+    .no-print {
+      display: none !important;
+    }
+
+    section {
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+
+    li,
+    figure {
+      break-inside: avoid;
+    }
+
+    * {
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+  }
+}

@@ -1,11 +1,11 @@
 import {ArrowDownTrayIcon, EnvelopeIcon, MapPinIcon} from '@heroicons/react/24/outline';
-import Link from 'next/link';
 import {FC, memo, PropsWithChildren, useCallback, useMemo} from 'react';
 
 import LinkedInIcon from '../../components/Icon/LinkedInIcon';
 import ProtectedContact from '../../components/ProtectedContact';
 import Reveal from '../../components/Reveal';
-import {LinenLanguage, LinenView} from './view';
+import DemoBar from '../DemoBar';
+import {ThemeLanguage, ThemeView} from '../view';
 
 /**
  * Linen theme — warm linen, bottle green and terracotta, with a serif display face.
@@ -33,7 +33,7 @@ const Block: FC<PropsWithChildren<{id?: string; className?: string}>> = memo(({i
   </section>
 ));
 
-const Dots: FC<{language: LinenLanguage}> = memo(({language}) => (
+const Dots: FC<{language: ThemeLanguage}> = memo(({language}) => (
   <span aria-label={`${language.score} out of 5`} className="flex gap-1.5" role="img">
     {[1, 2, 3, 4, 5].map(step => (
       <span
@@ -45,7 +45,7 @@ const Dots: FC<{language: LinenLanguage}> = memo(({language}) => (
 ));
 
 interface LinenThemeProps {
-  resume: LinenView;
+  resume: ThemeView;
   /** Show the template's theme switcher bar (demo site only). */
   demo?: boolean;
 }
@@ -58,15 +58,7 @@ const LinenTheme: FC<LinenThemeProps> = memo(({resume, demo}) => {
   return (
     <div className="min-h-screen bg-linen-bg font-sans text-linen-muted">
       {/* demo-only switcher between the template's themes */}
-      {demo && (
-        <div className="no-print bg-linen-deep px-4 py-2 text-center text-xs text-[#e8dccb]">
-          Demo themes:{' '}
-          <Link className="underline decoration-dotted underline-offset-4 hover:text-white" href="/">
-            Terminal
-          </Link>{' '}
-          · <span className="font-semibold text-white">Linen</span>
-        </div>
-      )}
+      {demo && <DemoBar className="bg-linen-deep text-[#e8dccb]" current="linen" currentClassName="text-white" />}
 
       <header className="no-print sticky top-0 z-30 border-b border-linen-line bg-linen-bg/90 backdrop-blur">
         <nav className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6">

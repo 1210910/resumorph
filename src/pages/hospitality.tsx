@@ -1,41 +1,23 @@
-import {Fraunces} from 'next/font/google';
 import Head from 'next/head';
+import {useRouter} from 'next/router';
 import {FC, memo, useEffect} from 'react';
 
-import {hospitality} from '../data/personas/hospitality';
-import HospitalityTheme from '../themes/hospitality';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  display: 'swap',
-  style: ['normal', 'italic'],
-  variable: '--font-fraunces',
-});
-
-/** Preview of the Hospitality theme with a fictional hotel front office manager. */
-const HospitalityDemo: FC = memo(() => {
-  // swaps the page canvas (body background, scrollbar) to the theme's linen while this page is open
+/** The Linen theme preview used to live here; keep shared links working. */
+const HospitalityRedirect: FC = memo(() => {
+  const router = useRouter();
   useEffect(() => {
-    const {classList} = document.documentElement;
-    classList.add('theme-hospitality');
-    return () => classList.remove('theme-hospitality');
-  }, []);
+    router.replace('/linen');
+  }, [router]);
 
-  const title = `${hospitality.name} · ${hospitality.role}`;
   return (
-    <>
-      <Head>
-        <title>{title}</title>
-        <meta content={hospitality.summary} name="description" />
-        <meta content={title} property="og:title" />
-        <meta content={hospitality.summary} property="og:description" />
-        <meta content="profile" property="og:type" />
-      </Head>
-      <div className={fraunces.variable}>
-        <HospitalityTheme resume={hospitality} />
-      </div>
-    </>
+    <Head>
+      <meta content={`0; url=${basePath}/linen/`} httpEquiv="refresh" />
+      <link href={`${basePath}/linen/`} rel="canonical" />
+      <meta content="noindex" name="robots" />
+    </Head>
   );
 });
 
-export default HospitalityDemo;
+export default HospitalityRedirect;

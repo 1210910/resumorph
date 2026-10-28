@@ -21,15 +21,15 @@ module.exports = {
           bright: '#a78bfa',
           dim: '#6d28d9',
         },
-        /** Hospitality theme: channels live in --h-* (globalStyles.scss) so dark mode can swap them. */
-        hosp: {
-          bg: 'rgb(var(--h-bg) / <alpha-value>)',
-          surface: 'rgb(var(--h-surface) / <alpha-value>)',
-          ink: 'rgb(var(--h-ink) / <alpha-value>)',
-          muted: 'rgb(var(--h-muted) / <alpha-value>)',
-          line: 'rgb(var(--h-line))', // already carries its own alpha
-          accent: 'rgb(var(--h-accent) / <alpha-value>)',
-          deep: 'rgb(var(--h-deep) / <alpha-value>)',
+        /** Linen theme: channels live in --ln-* (globalStyles.scss) so dark mode can swap them. */
+        linen: {
+          bg: 'rgb(var(--ln-bg) / <alpha-value>)',
+          surface: 'rgb(var(--ln-surface) / <alpha-value>)',
+          ink: 'rgb(var(--ln-ink) / <alpha-value>)',
+          muted: 'rgb(var(--ln-muted) / <alpha-value>)',
+          line: 'rgb(var(--ln-line))', // already carries its own alpha
+          accent: 'rgb(var(--ln-accent) / <alpha-value>)',
+          deep: 'rgb(var(--ln-deep) / <alpha-value>)',
         },
         /** Neutral grays for chrome text (labels, captions, meta). */
         smoke: {

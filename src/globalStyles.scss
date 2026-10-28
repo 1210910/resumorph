@@ -1159,49 +1159,49 @@ html.light .field-input {
   }
 }
 
-/* ── hospitality theme (/hospitality) ─────────────────────────────────
+/* ── linen theme (/linen) ────────────────────────────────────────────
    Warm linen, bottle green and terracotta. Colours are RGB channels so
-   Tailwind's hosp-* utilities can apply opacity. Follows the OS theme. */
-html.theme-hospitality {
-  --h-bg: 246 240 230;
-  --h-surface: 255 250 243;
-  --h-ink: 34 48 43;
-  --h-muted: 88 99 93;
-  --h-line: 34 48 43 / 0.13;
-  --h-accent: 164 83 47;
-  --h-deep: 31 59 51;
+   Tailwind's linen-* utilities can apply opacity. Follows the OS theme. */
+html.theme-linen {
+  --ln-bg: 246 240 230;
+  --ln-surface: 255 250 243;
+  --ln-ink: 34 48 43;
+  --ln-muted: 88 99 93;
+  --ln-line: 34 48 43 / 0.13;
+  --ln-accent: 164 83 47;
+  --ln-deep: 31 59 51;
 
   scrollbar-color: #d8cbb8 #f6f0e6;
 
   body {
-    color: rgb(var(--h-muted));
-    background-color: rgb(var(--h-bg));
+    color: rgb(var(--ln-muted));
+    background-color: rgb(var(--ln-bg));
   }
 
   ::selection {
-    background: rgb(var(--h-accent));
+    background: rgb(var(--ln-accent));
     color: #fff;
   }
 
   ::-webkit-scrollbar-track {
-    background: rgb(var(--h-bg));
+    background: rgb(var(--ln-bg));
   }
 
   ::-webkit-scrollbar-thumb {
-    border-color: rgb(var(--h-bg));
+    border-color: rgb(var(--ln-bg));
     background: #d8cbb8;
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  html.theme-hospitality {
-    --h-bg: 22 19 16;
-    --h-surface: 31 27 23;
-    --h-ink: 239 230 216;
-    --h-muted: 182 170 153;
-    --h-line: 239 230 216 / 0.12;
-    --h-accent: 226 141 99;
-    --h-deep: 16 37 31;
+  html.theme-linen {
+    --ln-bg: 22 19 16;
+    --ln-surface: 31 27 23;
+    --ln-ink: 239 230 216;
+    --ln-muted: 182 170 153;
+    --ln-line: 239 230 216 / 0.12;
+    --ln-accent: 226 141 99;
+    --ln-deep: 16 37 31;
 
     scrollbar-color: #3a332c #161310;
 
@@ -1213,9 +1213,9 @@ html.theme-hospitality {
 
 /* "Save as PDF" prints the page: drop the chrome, keep the colours */
 @media print {
-  html.theme-hospitality {
-    --h-bg: 255 255 255;
-    --h-surface: 255 255 255;
+  html.theme-linen {
+    --ln-bg: 255 255 255;
+    --ln-surface: 255 255 255;
 
     .no-print {
       display: none !important;

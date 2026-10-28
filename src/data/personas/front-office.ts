@@ -1,17 +1,17 @@
 /**
- * Hospitality demo persona — a fictional front office and guest experience manager.
+ * Front office demo persona — a fictional hotel front office and guest experience manager.
  *
- * Feeds the Hospitality theme preview at /hospitality. Plain data, no JSX, so it can
+ * Feeds the Linen theme preview at /linen. Plain data, no JSX, so it can
  * move to the YAML resume file without changes to its shape. Every name, hotel and
  * number here is made up.
  */
 
-export interface HospitalityStat {
+export interface LinenStat {
   value: string;
   label: string;
 }
 
-export interface HospitalityRole {
+export interface LinenRole {
   title: string;
   property: string;
   /** e.g. "5-star resort · 212 rooms" */
@@ -21,31 +21,31 @@ export interface HospitalityRole {
   highlights: string[];
 }
 
-export interface HospitalitySkillGroup {
+export interface LinenSkillGroup {
   name: string;
   skills: string[];
 }
 
-export interface HospitalityLanguage {
+export interface LinenLanguage {
   name: string;
   level: string;
   /** 1 (basic) to 5 (native), drawn as dots */
   score: 1 | 2 | 3 | 4 | 5;
 }
 
-export interface HospitalityCredential {
+export interface LinenCredential {
   title: string;
   issuer: string;
   year: string;
 }
 
-export interface HospitalityReference {
+export interface LinenReference {
   quote: string;
   name: string;
   role: string;
 }
 
-export interface HospitalityResume {
+export interface LinenResume {
   name: string;
   initials: string;
   role: string;
@@ -53,20 +53,20 @@ export interface HospitalityResume {
   availability: string;
   summary: string;
   about: string[];
-  stats: HospitalityStat[];
-  experience: HospitalityRole[];
-  skills: HospitalitySkillGroup[];
-  languages: HospitalityLanguage[];
-  credentials: HospitalityCredential[];
-  education: HospitalityCredential[];
-  references: HospitalityReference[];
+  stats: LinenStat[];
+  experience: LinenRole[];
+  skills: LinenSkillGroup[];
+  languages: LinenLanguage[];
+  credentials: LinenCredential[];
+  education: LinenCredential[];
+  references: LinenReference[];
   email: string;
   linkedin: string;
 }
 
-export const hospitality: HospitalityResume = {
-  name: 'Inês Carvalho',
-  initials: 'IC',
+export const frontOfficeManager: LinenResume = {
+  name: 'Clara Venn',
+  initials: 'CV',
   role: 'Front Office & Guest Experience Manager',
   location: 'Porto, Portugal',
   availability: 'Open to new roles from January',
@@ -150,17 +150,15 @@ export const hospitality: HospitalityResume = {
     {name: 'German', level: 'Basic (A2)', score: 2},
   ],
   credentials: [
-    {title: 'Certified Front Desk Manager', issuer: 'Example Hospitality Institute', year: '2023'},
+    {title: 'Certified Front Desk Manager', issuer: 'Example Linen Institute', year: '2023'},
     {title: 'Revenue Management Essentials', issuer: 'Example Online Academy', year: '2021'},
     {title: 'First Aid at Work', issuer: 'Example Red Cross', year: '2024'},
   ],
-  education: [
-    {title: 'BA in Hotel Management', issuer: 'Example School of Hospitality and Tourism', year: '2013 – 2016'},
-  ],
+  education: [{title: 'BA in Hotel Management', issuer: 'Example School of Linen and Tourism', year: '2013 – 2016'}],
   references: [
     {
       quote:
-        'Inês is the reason our arrival scores went up. Guests mention her team by name, and she knows every one of them.',
+        'Clara is the reason our arrival scores went up. Guests mention her team by name, and she knows every one of them.',
       name: 'Rui Teixeira',
       role: 'General Manager, Hotel Ribeira Azul',
     },
@@ -171,6 +169,6 @@ export const hospitality: HospitalityResume = {
       role: 'Director of Rooms, Quinta do Mar Resort & Spa',
     },
   ],
-  email: 'ines.carvalho@example.com',
+  email: 'clara.venn@example.com',
   linkedin: 'https://www.linkedin.com/in/your-profile/',
 };

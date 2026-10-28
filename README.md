@@ -4,7 +4,9 @@ One resume file, many shapes. An open-source CV website template built with Next
 
 **Live demo:** https://1210910.github.io/resumorph/
 
-> Work in progress. Today the template ships one theme (a dark, animated "terminal" look with a live shell in the hero). Next on the roadmap: a YAML content file, themes for non-tech fields (editorial for management, hospitality for tourism), multiple languages, a PDF generated from the same data, and an AI agent that interviews you, writes your resume file and deploys the site.
+**Hospitality theme preview:** https://1210910.github.io/resumorph/hospitality/
+
+> Work in progress. Today the template ships one full theme (a dark, animated "terminal" look with a live shell in the hero). A preview of the Hospitality theme (hotels, tourism, restaurants) lives at `/hospitality`, with its fictional persona in `src/data/personas/hospitality.ts`. Next on the roadmap: a YAML content file every theme reads, an editorial theme for management, multiple languages, a PDF generated from the same data, and an AI agent that interviews you, writes your resume file and deploys the site.
 
 ## Features
 

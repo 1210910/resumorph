@@ -2,6 +2,7 @@ import '../globalStyles.scss';
 
 import type {AppProps} from 'next/app';
 import {Inter, Space_Grotesk} from 'next/font/google';
+import {useRouter} from 'next/router';
 import {memo, useEffect} from 'react';
 
 import CursorGlow from '../components/CursorGlow';
@@ -30,7 +31,13 @@ const SiteBackground = memo(function SiteBackground() {
   );
 });
 
+// theme previews paint their own canvas, so they skip the terminal theme's backdrop and cursor glow
+const OWN_BACKDROP = ['/hospitality'];
+
 const MyApp = memo(({Component, pageProps}: AppProps): JSX.Element => {
+  const {pathname} = useRouter();
+  const terminalChrome = !OWN_BACKDROP.includes(pathname);
+
   // The mobile nav drawer renders through a Headless UI portal appended directly
   // to <body> — outside the root div below — so without this mirror it can't
   // resolve --font-inter / --font-space-grotesk and the whole drawer falls back
@@ -46,8 +53,8 @@ const MyApp = memo(({Component, pageProps}: AppProps): JSX.Element => {
 
   return (
     <div className={`${inter.variable} ${spaceGrotesk.variable} font-sans`}>
-      <SiteBackground />
-      <CursorGlow />
+      {terminalChrome && <SiteBackground />}
+      {terminalChrome && <CursorGlow />}
       <Component {...pageProps} />
     </div>
   );

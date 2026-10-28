@@ -1,4 +1,7 @@
 // eslint-disable-next-line no-undef
+const plugin = require('tailwindcss/plugin');
+
+// eslint-disable-next-line no-undef
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx,css,scss}'],
   theme: {
@@ -94,5 +97,10 @@ module.exports = {
     },
   },
   // eslint-disable-next-line no-undef
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    // paper: styles for the printed page, also shown in the Editorial theme's print preview
+    plugin(({addVariant}) => addVariant('paper', ['@media print', '.ed-preview &'])),
+  ],
 };

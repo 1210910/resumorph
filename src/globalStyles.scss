@@ -712,8 +712,9 @@ html.light .pod-badge {
 
 /* ── light theme (html.light, toggled in the header) ─────────────────
    Same layout and violet signal on warm paper. Tailwind neutrals used for
-   text and hairlines are remapped here instead of in every component. */
-html.light {
+   text and hairlines are remapped here instead of in every component.
+   The page themes (Linen, Editorial) set html.light too but have their own colours. */
+html.light:not(.theme-linen):not(.theme-editorial) {
   --color-ink: #f6f5f2;
   --color-ink-raised: #ffffff;
   --accent: #7c3aed;
@@ -1161,7 +1162,7 @@ html.light .field-input {
 
 /* ── linen theme (/linen) ────────────────────────────────────────────
    Warm linen, bottle green and terracotta. Colours are RGB channels so
-   Tailwind's linen-* utilities can apply opacity. Follows the OS theme. */
+   Tailwind's linen-* utilities can apply opacity. */
 html.theme-linen {
   --ln-bg: 246 240 230;
   --ln-surface: 255 250 243;
@@ -1193,29 +1194,34 @@ html.theme-linen {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  html.theme-linen {
-    --ln-bg: 22 19 16;
-    --ln-surface: 31 27 23;
-    --ln-ink: 239 230 216;
-    --ln-muted: 182 170 153;
-    --ln-line: 239 230 216 / 0.12;
-    --ln-accent: 226 141 99;
-    --ln-deep: 16 37 31;
+/* dark: html.dark, set from appearance in resume.yaml or the sun/moon button */
+html.theme-linen.dark {
+  --ln-bg: 22 19 16;
+  --ln-surface: 31 27 23;
+  --ln-ink: 239 230 216;
+  --ln-muted: 182 170 153;
+  --ln-line: 239 230 216 / 0.12;
+  --ln-accent: 226 141 99;
+  --ln-deep: 16 37 31;
 
-    scrollbar-color: #3a332c #161310;
+  scrollbar-color: #3a332c #161310;
 
-    ::-webkit-scrollbar-thumb {
-      background: #3a332c;
-    }
+  ::-webkit-scrollbar-thumb {
+    background: #3a332c;
   }
 }
 
 /* "Save as PDF" prints the page: drop the chrome, keep the colours */
 @media print {
-  html.theme-linen {
+  html.theme-linen,
+  html.theme-linen.dark {
     --ln-bg: 255 255 255;
     --ln-surface: 255 255 255;
+    --ln-ink: 34 48 43;
+    --ln-muted: 88 99 93;
+    --ln-line: 34 48 43 / 0.13;
+    --ln-accent: 164 83 47;
+    --ln-deep: 31 59 51;
 
     .no-print {
       display: none !important;
@@ -1236,7 +1242,7 @@ html.theme-linen {
 
 /* ── editorial theme (/editorial) ────────────────────────────────────
    Paper and ink with one oxblood accent, like a printed magazine page.
-   RGB channels so Tailwind's ed-* utilities can apply opacity. Follows the OS theme. */
+   RGB channels so Tailwind's ed-* utilities can apply opacity. */
 html.theme-editorial {
   --ed-paper: 250 248 243;
   --ed-ink: 20 20 19;
@@ -1275,25 +1281,25 @@ html.theme-editorial {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  html.theme-editorial {
-    --ed-paper: 18 18 17;
-    --ed-ink: 236 232 225;
-    --ed-muted: 168 163 154;
-    --ed-rule: 236 232 225 / 0.16;
-    --ed-accent: 232 110 98;
+/* dark: html.dark, set from appearance in resume.yaml or the sun/moon button */
+html.theme-editorial.dark {
+  --ed-paper: 18 18 17;
+  --ed-ink: 236 232 225;
+  --ed-muted: 168 163 154;
+  --ed-rule: 236 232 225 / 0.16;
+  --ed-accent: 232 110 98;
 
-    scrollbar-color: #3a3835 #121211;
+  scrollbar-color: #3a3835 #121211;
 
-    ::-webkit-scrollbar-thumb {
-      background: #3a3835;
-    }
+  ::-webkit-scrollbar-thumb {
+    background: #3a3835;
   }
 }
 
 /* "Save as PDF" prints a clean, paper-white CV */
 @media print {
-  html.theme-editorial {
+  html.theme-editorial,
+  html.theme-editorial.dark {
     --ed-paper: 255 255 255;
     --ed-ink: 20 20 19;
     --ed-muted: 82 80 76;
@@ -1318,5 +1324,26 @@ html.theme-editorial {
       print-color-adjust: exact;
       -webkit-print-color-adjust: exact;
     }
+  }
+}
+
+/* The print preview frame (?print-preview, shown by the Preview button): the page as it prints */
+html.theme-editorial.ed-preview,
+html.theme-editorial.ed-preview.dark {
+  --ed-paper: 255 255 255;
+  --ed-ink: 20 20 19;
+  --ed-muted: 82 80 76;
+  --ed-rule: 20 20 19 / 0.16;
+  --ed-accent: 155 28 28;
+
+  overflow: hidden;
+
+  .no-print {
+    display: none !important;
+  }
+
+  section {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 }

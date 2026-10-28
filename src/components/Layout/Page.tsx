@@ -2,8 +2,10 @@ import {NextPage} from 'next';
 import Head from 'next/head';
 import {memo, PropsWithChildren} from 'react';
 
+import {resume} from '../../content';
 import {aboutData, contact, heroData, homePageMeta, profile, skills, socialLinks} from '../../data/data';
 import {ContactType, HomepageMeta} from '../../data/dataDef';
+import {useAppearance} from '../ThemeToggle';
 
 const SITE_BASE = process.env.NEXT_PUBLIC_SITE_URL || ''; // e.g. "https://yourname.github.io" — set via env at deploy time
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''; // must match next.config.js basePath (project sites deploy under /<repo>)
@@ -30,12 +32,14 @@ const personJsonLd = JSON.stringify({
 
 const Page: NextPage<PropsWithChildren<HomepageMeta>> = memo(({children, title, description}) => {
   const pathname = (typeof window !== 'undefined' && window.location.pathname) || '/';
+  useAppearance(resume.appearance);
 
   return (
     <>
       <Head>
         <title>{title}</title>
         <meta content={description} name="description" />
+        <meta content={resume.appearance} key="appearance" name="appearance" />
         {/* opt out of AI training; robots.txt and Cloudflare do the actual blocking */}
         <meta content="noai, noimageai" name="robots" />
 

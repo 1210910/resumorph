@@ -1,5 +1,7 @@
 import {Head, Html, Main, NextScript} from 'next/document';
 
+import {appearanceScript} from '../components/ThemeToggle';
+
 // next/document <Head /> vs next/head <Head />
 //
 // next/document Head is rendered once on the server. This is different from next/head which will
@@ -18,15 +20,10 @@ export default function Document() {
           - https://github.com/facebook/react/issues/11538
           - https://bugs.chromium.org/p/chromium/issues/detail?id=872770 */}
         <meta content="notranslate" name="google" />
-        {/* apply a remembered light theme before first paint (dark is the default) */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "try{if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light')}catch(e){}",
-          }}
-        />
       </Head>
       <body>
+        {/* light or dark before first paint: the visitor's choice, else the page's appearance meta */}
+        <script dangerouslySetInnerHTML={{__html: appearanceScript}} />
         <Main />
         <NextScript />
       </body>

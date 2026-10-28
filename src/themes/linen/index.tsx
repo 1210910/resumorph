@@ -4,6 +4,7 @@ import {FC, memo, PropsWithChildren, useCallback, useMemo} from 'react';
 
 import LinkedInIcon from '../../components/Icon/LinkedInIcon';
 import Reveal from '../../components/Reveal';
+import ThemeToggle from '../../components/ThemeToggle';
 import DemoBar from '../DemoBar';
 import {ThemeLanguage, ThemeView} from '../view';
 import KeyCard from './KeyCard';
@@ -87,11 +88,17 @@ const LinenTheme: FC<LinenThemeProps> = memo(({resume, demo}) => {
               </li>
             ))}
           </ul>
-          <a
-            className="rounded-full bg-linen-ink px-4 py-2 text-sm font-medium text-linen-bg transition-opacity hover:opacity-85"
-            href="#contact">
-            Get in touch
-          </a>
+          <div className="flex items-center gap-2">
+            <ThemeToggle
+              className="grid h-10 w-10 place-items-center rounded-full text-linen-ink transition-colors hover:text-linen-accent"
+              iconClassName="h-5 w-5"
+            />
+            <a
+              className="rounded-full bg-linen-ink px-4 py-2 text-sm font-medium text-linen-bg transition-opacity hover:opacity-85"
+              href="#contact">
+              Get in touch
+            </a>
+          </div>
         </nav>
       </header>
 

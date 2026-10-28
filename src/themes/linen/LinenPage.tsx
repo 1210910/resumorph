@@ -2,6 +2,7 @@ import {Fraunces} from 'next/font/google';
 import Head from 'next/head';
 import {CSSProperties, FC, memo, useEffect, useMemo} from 'react';
 
+import {useAppearance} from '../../components/ThemeToggle';
 import {Resume} from '../../content';
 import {toThemeView} from '../view';
 import LinenTheme from '.';
@@ -23,6 +24,7 @@ const LinenPage: FC<{resume: Resume; demo?: boolean}> = memo(({resume, demo}) =>
     return () => classList.remove('theme-linen');
   }, []);
 
+  useAppearance(resume.appearance);
   const view = useMemo(() => toThemeView(resume), [resume]);
   const title = `${view.name} · ${view.role}`;
   return (
@@ -30,6 +32,8 @@ const LinenPage: FC<{resume: Resume; demo?: boolean}> = memo(({resume, demo}) =>
       <Head>
         <title>{title}</title>
         <meta content={view.summary} name="description" />
+        <meta content={resume.appearance} key="appearance" name="appearance" />
+        <meta content="theme-linen" key="theme-class" name="theme-class" />
         <meta content={title} property="og:title" />
         <meta content={view.summary} property="og:description" />
         <meta content="profile" property="og:type" />
